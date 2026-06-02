@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadowdark Homebrew - Roll20 Macros</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="shared.js" defer></script>
+  <script src="macros.js" defer></script>
+</head>
+<body>
+  <header class="hero hero--compact">
+    <div class="hero__overlay"></div>
+    <div class="hero__content wrap">
+      <p class="eyebrow">Shadowdark Homebrew Edition</p>
+      <h1>Roll20 Macros</h1>
+      <nav class="hero__actions">
+        <a href="index.html" class="btn btn--gold">Builder</a>
+        <a href="characters.html" class="btn btn--paper">Character Viewer</a>
+        <a href="sheet.html" class="btn btn--paper">Printable Sheet</a>
+        <a href="classes.html" class="btn btn--ink">Class Browser</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <h2 id="macroHeader">Selected Character</h2>
+      <p class="panel-note">Copy any macro directly into Roll20 abilities or macro bar.</p>
+      <div id="macroBlocks" class="macro-blocks"></div>
+      <div class="sheet-actions">
+        <button id="toViewerBtn" class="btn btn--paper" type="button">Back To Viewer</button>
+        <button id="toSheetBtn" class="btn btn--ink" type="button">Open Printable Sheet</button>
+        <button id="toBuilderBtn" class="btn btn--gold" type="button">Edit In Builder</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

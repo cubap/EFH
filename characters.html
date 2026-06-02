@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadowdark Homebrew - Character Viewer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="shared.js" defer></script>
+  <script src="viewer.js" defer></script>
+</head>
+<body>
+  <header class="hero hero--compact">
+    <div class="hero__overlay"></div>
+    <div class="hero__content wrap">
+      <p class="eyebrow">Shadowdark Homebrew Edition</p>
+      <h1>Character Viewer</h1>
+      <nav class="hero__actions">
+        <a href="index.html" class="btn btn--gold">Builder</a>
+        <a href="sheet.html" class="btn btn--paper">Printable Sheet</a>
+        <a href="macros.html" class="btn btn--paper">Roll20 Macros</a>
+        <a href="classes.html" class="btn btn--ink">Class Browser</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <h2>Saved Characters</h2>
+      <div id="characterList" class="saved-list"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Character Summary</h2>
+      <article id="characterSummary" class="sheet"></article>
+      <div class="sheet-actions">
+        <button id="toBuilderBtn" class="btn btn--gold" type="button">Edit In Builder</button>
+        <button id="toMacrosBtn" class="btn btn--paper" type="button">Open Macros</button>
+        <button id="toSheetBtn" class="btn btn--ink" type="button">Open Printable Sheet</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
