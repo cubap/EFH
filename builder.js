@@ -157,18 +157,18 @@ function renderClassCards() {
         `
       }
     })
-    card.addEventListener("click", () => classModal.open(cls))
-    card.addEventListener("keydown", e => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault()
-        classModal.open(cls)
-      }
-    })
+      card.addEventListener("click", () => classModal.open(cls, card))
+      card.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          classModal.open(cls, card)
+        }
+      })
     refs.classCardGrid.appendChild(card)
   })
 }
 
-  // Class modal (created once, reused)
+  // Class modal (created once, reused) with animated link from source card
   const classModal = (() => {
     const overlay = document.createElement("div")
     overlay.className = "ancestry-modal-overlay"
@@ -177,76 +177,109 @@ function renderClassCards() {
     overlay.innerHTML = `<div class="ancestry-modal"><div class="ancestry-modal__portrait-col" id="cmPortrait"></div><div class="ancestry-modal__header"><span class="ancestry-modal__name" id="cmName"></span><button type="button" class="ancestry-modal__close" id="cmClose">Close</button></div><div class="ancestry-modal__body"><p class="ancestry-modal__summary" id="cmSummary"></p><p class="ancestry-modal__meta" id="cmMeta"></p><div class="ancestry-modal__traits" id="cmFeatures"></div><div class="ancestry-modal__traits" id="cmTalents"></div></div><button type="button" class="btn btn--ink ancestry-modal__select-btn" id="cmSelect">Select this Class</button></div>`
     document.body.appendChild(overlay)
 
-    const close = () => { overlay.dataset.open = "false" }
-    overlay.querySelector("#cmClose").addEventListener("click", close)
-    overlay.addEventListener("click", e => { if (e.target === overlay) close() })
-    document.addEventListener("keydown", e => { if (e.key === "Escape") close() })
+    let _lastSource = null
+
+    const doClose = async () => {
+      // run reverse animation to the last source element if possible
+      overlay.dataset.open = "false"
+      if (_lastSource) {
+        try {
+          await animateModalToCard(overlay, '#cmPortrait', _lastSource)
+        } catch (e) {}
+      }
+      _lastSource = null
+    }
+
+    overlay.querySelector("#cmClose").addEventListener("click", doClose)
+    overlay.addEventListener("click", e => { if (e.target === overlay) doClose() })
+    document.addEventListener("keydown", e => { if (e.key === "Escape") doClose() })
 
     return {
-      open(entry) {
-        overlay.querySelector("#cmName").textContent = entry.name
-        overlay.querySelector("#cmSummary").textContent = entry.summary ?? ""
-        overlay.querySelector("#cmMeta").innerHTML = `<strong>Hit Die:</strong> d${entry.hitDie} &mdash; <strong>Weapons:</strong> ${SD.escapeHtml(entry.weapons)} &mdash; <strong>Armor:</strong> ${SD.escapeHtml(entry.armor)}`
+      open(entry, sourceEl) {
+        // store a lightweight descriptor (value) so we can find the current
+        // card element later even if the DOM was re-rendered
+        _lastSource = sourceEl ? { value: entry.id } : null
 
-        const portraitCol = overlay.querySelector("#cmPortrait")
-        portraitCol.innerHTML = ""
-        if (entry.image) {
-          const img = document.createElement("img")
-          img.src = entry.image
-          img.alt = entry.name
-          img.onerror = () => { img.replaceWith(makePlaceholder(entry.name[0])) }
-          portraitCol.appendChild(img)
+        const populate = () => {
+          overlay.querySelector("#cmName").textContent = entry.name
+          overlay.querySelector("#cmSummary").textContent = entry.summary ?? ""
+          overlay.querySelector("#cmMeta").innerHTML = `<strong>Hit Die:</strong> d${entry.hitDie} &mdash; <strong>Weapons:</strong> ${SD.escapeHtml(entry.weapons)} &mdash; <strong>Armor:</strong> ${SD.escapeHtml(entry.armor)}`
+
+          const portraitCol = overlay.querySelector("#cmPortrait")
+          portraitCol.innerHTML = ""
+          if (entry.image) {
+            const img = document.createElement("img")
+            img.src = entry.image
+            img.alt = entry.name
+            img.onerror = () => { img.replaceWith(makePlaceholder(entry.name[0])) }
+            portraitCol.appendChild(img)
+          } else {
+            portraitCol.appendChild(makePlaceholder(entry.name[0]))
+          }
+
+          const featuresEl = overlay.querySelector("#cmFeatures")
+          featuresEl.innerHTML = (entry.features ?? []).map(f => {
+            const title = SD.escapeHtml(f.title ?? f.name ?? "Feature")
+            const text = SD.escapeHtml(f.text ?? f.summary ?? "")
+            return `<div><span class="ancestry-modal__trait-title">${title}</span><p class="ancestry-modal__trait-text">${text}</p></div>`
+          }).join("")
+
+          const talentsEl = overlay.querySelector("#cmTalents")
+          const talents = (entry.talents ?? [])
+          const rows = talents.map(t => {
+            const rollRaw = (t && t.roll) ? t.roll : ""
+            const roll = SD.escapeHtml(String(rollRaw))
+            let effectRaw = ""
+            if (typeof t === "string") effectRaw = t
+            else if (t && typeof t === "object") {
+              if (t.effect !== undefined) effectRaw = (typeof t.effect === 'string') ? t.effect : JSON.stringify(t.effect)
+              else effectRaw = JSON.stringify(t)
+            } else effectRaw = String(t)
+            const effect = SD.escapeHtml(effectRaw)
+            return `<tr><td class="talent-label">${roll}</td><td class="talent-effect">${effect}</td></tr>`
+          }).join("")
+
+          talentsEl.innerHTML = `
+            <table class="class-talents-table" aria-label="Talents">
+              <thead><tr><th>Talent</th><th>Result</th></tr></thead>
+              <tbody>
+                ${rows}
+              </tbody>
+            </table>
+          `
+
+          const selectBtn = overlay.querySelector("#cmSelect")
+          selectBtn.textContent = wizardState.selections.classId === entry.id ? "Selected ✓" : `Select ${entry.name}`
+          selectBtn.onclick = () => {
+            wizardState.selections.classId = entry.id
+            renderClassCards()
+            renderSelectionsBar()
+            flyToSummary(selectBtn)
+            selectBtn.textContent = "Selected ✓"
+          }
+        }
+
+        populate()
+
+        if (sourceEl) {
+          // make overlay present but invisible so we can compute target rect
+          overlay.style.visibility = 'hidden'
+          overlay.dataset.open = 'true'
+          animateCardToModal(sourceEl, overlay, '#cmPortrait').then(() => {
+            overlay.style.visibility = ''
+            overlay.dataset.open = 'true'
+          }).catch(() => {
+            overlay.style.visibility = ''
+            overlay.dataset.open = 'true'
+          })
         } else {
-          portraitCol.appendChild(makePlaceholder(entry.name[0]))
+          overlay.dataset.open = 'true'
         }
-
-        const featuresEl = overlay.querySelector("#cmFeatures")
-        featuresEl.innerHTML = (entry.features ?? []).map(f => {
-          const title = SD.escapeHtml(f.title ?? f.name ?? "Feature")
-          const text = SD.escapeHtml(f.text ?? f.summary ?? "")
-          return `<div><span class="ancestry-modal__trait-title">${title}</span><p class="ancestry-modal__trait-text">${text}</p></div>`
-        }).join("")
-
-        const talentsEl = overlay.querySelector("#cmTalents")
-        const talents = (entry.talents ?? [])
-        const rows = talents.map(t => {
-          const rollRaw = (t && t.roll) ? t.roll : ""
-          const roll = SD.escapeHtml(String(rollRaw))
-          let effectRaw = ""
-          if (typeof t === "string") effectRaw = t
-          else if (t && typeof t === "object") {
-            if (t.effect !== undefined) effectRaw = (typeof t.effect === 'string') ? t.effect : JSON.stringify(t.effect)
-            else effectRaw = JSON.stringify(t)
-          } else effectRaw = String(t)
-          const effect = SD.escapeHtml(effectRaw)
-          return `<tr><td class="talent-label">${roll}</td><td class="talent-effect">${effect}</td></tr>`
-        }).join("")
-
-        talentsEl.innerHTML = `
-          <table class="class-talents-table" aria-label="Talents">
-            <thead><tr><th>Talent</th><th>Result</th></tr></thead>
-            <tbody>
-              ${rows}
-            </tbody>
-          </table>
-        `
-
-        const selectBtn = overlay.querySelector("#cmSelect")
-        selectBtn.textContent = wizardState.selections.classId === entry.id ? "Selected ✓" : `Select ${entry.name}`
-        selectBtn.onclick = () => {
-          wizardState.selections.classId = entry.id
-          renderClassCards()
-          renderSelectionsBar()
-          flyToSummary(selectBtn)
-          selectBtn.textContent = "Selected ✓"
-        }
-
-        overlay.dataset.open = "true"
       }
     }
   })()
 
-// Ancestry modal (created once, reused)
+  // Ancestry modal (created once, reused) with animated link from source card
 const ancestryModal = (() => {
   const overlay = document.createElement("div")
   overlay.className = "ancestry-modal-overlay"
@@ -255,53 +288,70 @@ const ancestryModal = (() => {
   overlay.innerHTML = `<div class="ancestry-modal"><div class="ancestry-modal__portrait-col" id="amPortrait"></div><div class="ancestry-modal__header"><span class="ancestry-modal__name" id="amName"></span><button type="button" class="ancestry-modal__close" id="amClose">Close</button></div><div class="ancestry-modal__body"><p class="ancestry-modal__summary" id="amSummary"></p><p class="ancestry-modal__meta" id="amMeta"></p><div class="ancestry-modal__traits" id="amTraits"></div></div><button type="button" class="btn btn--ink ancestry-modal__select-btn" id="amSelect">Select this Ancestry</button></div>`
   document.body.appendChild(overlay)
 
-  const close = () => { overlay.dataset.open = "false" }
-  overlay.querySelector("#amClose").addEventListener("click", close)
-  overlay.addEventListener("click", e => { if (e.target === overlay) close() })
-  document.addEventListener("keydown", e => { if (e.key === "Escape") close() })
+  let _lastSource = null
+
+  const doClose = async () => {
+    overlay.dataset.open = 'false'
+    if (_lastSource) {
+      try { await animateModalToCard(overlay, '#amPortrait', _lastSource) } catch (e) {}
+    }
+    _lastSource = null
+  }
+
+  overlay.querySelector('#amClose').addEventListener('click', doClose)
+  overlay.addEventListener('click', e => { if (e.target === overlay) doClose() })
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') doClose() })
 
   return {
-    open(entry) {
-      overlay.querySelector("#amName").textContent = entry.name
-      overlay.querySelector("#amSummary").textContent = entry.summary ?? ""
-      overlay.querySelector("#amMeta").innerHTML =
-        `<strong>Language:</strong> ${SD.escapeHtml(entry.extraLanguage)} &mdash; <strong>Bonus:</strong> ${SD.escapeHtml(entry.bonus)}`
+    open(entry, sourceEl) {
+      _lastSource = sourceEl ? { value: entry.name } : null
+      overlay.querySelector('#amName').textContent = entry.name
+      overlay.querySelector('#amSummary').textContent = entry.summary ?? ''
+      overlay.querySelector('#amMeta').innerHTML = `<strong>Language:</strong> ${SD.escapeHtml(entry.extraLanguage)} &mdash; <strong>Bonus:</strong> ${SD.escapeHtml(entry.bonus)}`
 
-      const portraitCol = overlay.querySelector("#amPortrait")
-      portraitCol.innerHTML = ""
+      const portraitCol = overlay.querySelector('#amPortrait')
+      portraitCol.innerHTML = ''
       if (entry.image) {
-        const img = document.createElement("img")
+        const img = document.createElement('img')
         img.src = entry.image
         img.alt = entry.name
-        img.onerror = () => {
-          img.replaceWith(makePlaceholder(entry.name[0]))
-        }
+        img.onerror = () => { img.replaceWith(makePlaceholder(entry.name[0])) }
         portraitCol.appendChild(img)
       } else {
         portraitCol.appendChild(makePlaceholder(entry.name[0]))
       }
 
-      const traitsEl = overlay.querySelector("#amTraits")
+      const traitsEl = overlay.querySelector('#amTraits')
       traitsEl.innerHTML = (entry.traits ?? []).map(t => `
         <div>
           <span class="ancestry-modal__trait-title">${SD.escapeHtml(t.title)}</span>
           <p class="ancestry-modal__trait-text">${SD.escapeHtml(t.text)}</p>
         </div>
-      `).join("")
+      `).join('')
 
-      const selectBtn = overlay.querySelector("#amSelect")
-      selectBtn.textContent = wizardState.selections.ancestry === entry.name
-        ? "Selected ✓"
-        : `Select ${entry.name}`
+      const selectBtn = overlay.querySelector('#amSelect')
+      selectBtn.textContent = wizardState.selections.ancestry === entry.name ? 'Selected ✓' : `Select ${entry.name}`
       selectBtn.onclick = () => {
         wizardState.selections.ancestry = entry.name
         renderAncestryCards()
         renderSelectionsBar()
         flyToSummary(selectBtn)
-        selectBtn.textContent = "Selected ✓"
+        selectBtn.textContent = 'Selected ✓'
       }
 
-      overlay.dataset.open = "true"
+      if (sourceEl) {
+        overlay.style.visibility = 'hidden'
+        overlay.dataset.open = 'true'
+        animateCardToModal(sourceEl, overlay, '#amPortrait').then(() => {
+          overlay.style.visibility = ''
+          overlay.dataset.open = 'true'
+        }).catch(() => {
+          overlay.style.visibility = ''
+          overlay.dataset.open = 'true'
+        })
+      } else {
+        overlay.dataset.open = 'true'
+      }
     }
   }
 })()
@@ -363,12 +413,12 @@ function renderAncestryCards() {
     inner.append(front, back)
     flipWrap.appendChild(inner)
 
-    // Click: open modal detail view
-    flipWrap.addEventListener("click", () => ancestryModal.open(entry))
+    // Click: open modal detail view (pass source element for animation)
+    flipWrap.addEventListener("click", () => ancestryModal.open(entry, flipWrap))
     flipWrap.addEventListener("keydown", e => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault()
-        ancestryModal.open(entry)
+        ancestryModal.open(entry, flipWrap)
       }
     })
 
@@ -558,6 +608,101 @@ function makeFlipCard({ value, selected, makeFront, makeBack }) {
   inner.append(front, back)
   wrap.appendChild(inner)
   return wrap
+}
+
+// Animates a clicked card element scaling into the modal portrait area.
+function animateCardToModal(sourceEl, overlay, portraitSelector) {
+  // Assumes overlay content is already populated but hidden (overlay.dataset.open may be true while overlay.style.visibility='hidden')
+  const srcRect = sourceEl.getBoundingClientRect()
+  const targetEl = overlay.querySelector(portraitSelector) || overlay.querySelector('.ancestry-modal')
+  const targetRect = targetEl.getBoundingClientRect()
+
+  // Create a ghost clone of the source element
+  const ghost = sourceEl.cloneNode(true)
+  ghost.classList.add('card-ghost')
+  Object.assign(ghost.style, {
+    left: `${srcRect.left}px`,
+    top: `${srcRect.top}px`,
+    width: `${srcRect.width}px`,
+    height: `${srcRect.height}px`
+  })
+  document.body.appendChild(ghost)
+
+  // Compute translation / scale to center of target
+  const tx = (targetRect.left + targetRect.width / 2) - (srcRect.left + srcRect.width / 2)
+  const ty = (targetRect.top + targetRect.height / 2) - (srcRect.top + srcRect.height / 2)
+  const sx = targetRect.width / srcRect.width
+  const sy = targetRect.height / srcRect.height
+  const s = Math.min(sx, sy)
+
+  // Force layout then animate
+  ghost.getBoundingClientRect()
+  requestAnimationFrame(() => {
+    ghost.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`
+    ghost.style.opacity = '0.22'
+  })
+
+  return new Promise(resolve => {
+    ghost.addEventListener('transitionend', () => {
+      ghost.remove()
+      resolve()
+    }, { once: true })
+  })
+}
+
+function animateModalToCard(overlay, portraitSelector, destElOrDescriptor) {
+  const targetEl = overlay.querySelector(portraitSelector) || overlay.querySelector('.ancestry-modal')
+  const targetRect = targetEl.getBoundingClientRect()
+
+  // Create ghost from targetEl
+  const ghost = targetEl.cloneNode(true)
+  ghost.classList.add('card-ghost')
+  Object.assign(ghost.style, {
+    left: `${targetRect.left}px`,
+    top: `${targetRect.top}px`,
+    width: `${targetRect.width}px`,
+    height: `${targetRect.height}px`,
+    transform: 'none',
+    opacity: '1'
+  })
+  document.body.appendChild(ghost)
+
+  // Resolve destination element if descriptor provided (handles replaced DOM nodes)
+  let dstEl = null
+  if (destElOrDescriptor) {
+    if (destElOrDescriptor instanceof Element) dstEl = destElOrDescriptor
+    else if (typeof destElOrDescriptor === 'object' && destElOrDescriptor.value) {
+      try {
+        const selector = `[data-value="${CSS.escape(String(destElOrDescriptor.value))}"]`
+        dstEl = document.querySelector(selector)
+      } catch (e) {
+        dstEl = document.querySelector(`[data-value="${destElOrDescriptor.value}"]`)
+      }
+    } else if (typeof destElOrDescriptor === 'string') {
+      dstEl = document.querySelector(`[data-value="${destElOrDescriptor}"]`)
+    }
+  }
+
+  // If no destination, fade out the ghost quickly
+  if (!dstEl) {
+    requestAnimationFrame(() => { ghost.style.opacity = '0' })
+    return new Promise(resolve => ghost.addEventListener('transitionend', () => { ghost.remove(); resolve() }, { once: true }))
+  }
+
+  const dstRect = dstEl.getBoundingClientRect()
+  const tx = (dstRect.left + dstRect.width / 2) - (targetRect.left + targetRect.width / 2)
+  const ty = (dstRect.top + dstRect.height / 2) - (targetRect.top + targetRect.height / 2)
+  const sx = dstRect.width / targetRect.width
+  const sy = dstRect.height / targetRect.height
+  const s = Math.min(sx, sy)
+
+  requestAnimationFrame(() => {
+    ghost.style.transform = `translate(${tx}px, ${ty}px) scale(${s})`
+    // keep a faint ghost visible while shrinking to the card
+    ghost.style.opacity = '0.28'
+  })
+
+  return new Promise(resolve => ghost.addEventListener('transitionend', () => { ghost.remove(); resolve() }, { once: true }))
 }
 
 function flyToSummary(sourceEl) {
