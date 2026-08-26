@@ -1124,3 +1124,279 @@ fieldset {
   line-height: 1.2;
   text-align: center;
 }
+
+/* Rules reference page */
+.rules-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .rules-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rules-nav {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rules-nav__group {
+  border: 1px solid var(--edge-soft);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 0.4rem;
+}
+
+.rules-nav__section {
+  width: 100%;
+  text-align: left;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--edge-soft);
+  padding: 0.4rem 0.5rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.rules-nav__section[data-active="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.rules-nav__classes {
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem 0.25rem 0.25rem;
+  gap: 0.15rem;
+}
+
+.rules-nav__class {
+  text-align: left;
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  background: none;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  color: var(--ink);
+  border-radius: 2px;
+}
+
+.rules-nav__class:hover,
+.rules-nav__class[data-active="true"] {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.rules-content h2 {
+  margin-top: 0;
+}
+
+.rules-content h3 {
+  border-bottom: 1px solid var(--edge-soft);
+  padding-bottom: 0.25rem;
+  margin-top: 1.5rem;
+}
+
+.rules-content ul {
+  padding-left: 1.25rem;
+}
+
+.rules-content li {
+  margin: 0.2rem 0;
+}
+
+.rules-figure {
+  margin: 1.25rem 0 0;
+}
+
+.rules-figure img {
+  width: 100%;
+  max-width: 640px;
+  border: 2px solid var(--line);
+  display: block;
+}
+
+.rules-figure figcaption {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: 0.35rem;
+}
+
+/* Character randomizer */
+.hint {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+#resultPanel {
+  margin-top: 1.25rem;
+}
+
+.result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.result-head h2 {
+  margin: 0;
+  font-family: "UnifrakturMaguntia", serif;
+}
+
+.result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  font-family: "Cinzel", serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.15rem 0.5rem;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.result-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.result-meta dt {
+  font-family: "Cinzel", serif;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+.result-meta dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 560px) {
+  .result-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.result-stats .stat {
+  border: 1px solid var(--edge-soft);
+  border-radius: 2px;
+  padding: 0.4rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.result-stats .stat span:first-child {
+  font-family: "Cinzel", serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+.result-stats .stat strong {
+  font-size: 1.4rem;
+}
+
+.result-stats .stat span:last-child {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* Staggered reveal for the randomizer */
+.reveal {
+  opacity: 0.45;
+  animation: reveal-pulse 1.1s ease-in-out infinite;
+}
+
+/* Text values are inline by default; make them block-level so scale() transforms apply. */
+.result-meta dd.reveal,
+.result-head h2.reveal,
+.tag.reveal {
+  display: inline-block;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  animation: reveal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Typing effect: suppress the pop animation while the name is being typed out. */
+.reveal.typing {
+  animation: none;
+  min-height: 1.2em;
+}
+
+.result-stats .stat.rolling strong {
+  color: #8a1c1c;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes reveal-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes reveal-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-in {
+    animation: none;
+    opacity: 1;
+  }
+}

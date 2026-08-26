@@ -9,6 +9,7 @@ const CLASS_DATA = [
     armor: "Leather armor, mithral chainmail",
     hitPoints: "1d4 per level",
     hitDie: 4,
+    focus: ["dex", "wis"],
     features: [
       {
         title: "Psychic Dagger",
@@ -56,6 +57,7 @@ const CLASS_DATA = [
     armor: "All armor and shields",
     hitPoints: "1d8 per level",
     hitDie: 8,
+    focus: ["str", "cha"],
     alignment: "Lawful only",
     features: [
       {
@@ -101,6 +103,7 @@ const CLASS_DATA = [
     armor: "Leather armor",
     hitPoints: "1d4 per level",
     hitDie: 4,
+    focus: ["cha"],
     features: [
       {
         title: "Elemental Manipulation",
@@ -167,6 +170,7 @@ const CLASS_DATA = [
     armor: "None",
     hitPoints: "1d6 per level",
     hitDie: 6,
+    focus: ["dex", "wis"],
     features: [
       {
         title: "Martial Arts",
@@ -216,6 +220,7 @@ const CLASS_DATA = [
     armor: "Leather armor, chainmail, mithral chainmail, shields",
     hitPoints: "1d6 per level",
     hitDie: 6,
+    focus: ["con"],
     features: [
       {
         title: "Kinetic Force",

@@ -1,0 +1,1532 @@
+{
+  "source": "https://sites.google.com/view/sd-homebrew-edition",
+  "scrapedAt": "2026-08-26T19:25:40.084Z",
+  "pages": {
+    "home": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/home",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Shadowdark",
+          "level": 1
+        },
+        {
+          "type": "paragraph",
+          "text": "Specifics for my table"
+        },
+        {
+          "type": "paragraph",
+          "text": "Welcome to my Shadowdark class guide. This page exists to expand our options for long-term campaigns without losing what makes the core game work. The original four classes—Fighter, Thief, Wizard, and Priest—still define the foundation of play, and nothing here is meant to replace or outshine them. Instead, these additional classes are built to sit alongside them, offering different identities, perspectives, and playstyles while aiming to stay in line with Shadowdark’s overall power level."
+        },
+        {
+          "type": "paragraph",
+          "text": "Each class comes from a simple framework: how a character acts when it matters most, and the lens through which they understand the world. The goal isn’t more power—it’s more meaningful variety. You’ll still see the same core roles, but expressed in different ways, with different strengths, limits, and flavor. Some classes are original, others are adapted for Shadowdark where they already fit the space cleanly."
+        },
+        {
+          "type": "paragraph",
+          "text": "At the table, this is all still an experiment. The intent is to create options that feel distinct, balanced, and worth exploring over a long campaign—without losing the clarity and simplicity that make Shadowdark fun to run and play."
+        },
+        {
+          "type": "paragraph",
+          "text": "Some official classes aren’t included here—not because they don’t work, but because they either overlap within this framework or are too setting-specific for the kind of game I’m building."
+        }
+      ]
+    },
+    "home/design-notes": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/home/design-notes",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Design Notes"
+        },
+        {
+          "type": "paragraph",
+          "text": "This section exists because I enjoy this part of the process. You don’t need any of this to play—but if you’ve ever wondered why the classes look the way they do, this is the answer."
+        },
+        {
+          "type": "paragraph",
+          "text": "Where This Started"
+        },
+        {
+          "type": "paragraph",
+          "text": "This whole framework started years before Shadowdark, when I was trying to make sense of Dungeons & Dragons class design."
+        },
+        {
+          "type": "paragraph",
+          "text": "The breaking point for me was the Mystic."
+        },
+        {
+          "type": "paragraph",
+          "text": "It showed up in Unearthed Arcana multiple times, never quite worked, and was eventually abandoned. Meanwhile, the Artificer—which was being developed alongside it—made it into the game just fine."
+        },
+        {
+          "type": "paragraph",
+          "text": "That raised a simple question:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Why does one concept fit cleanly into the system, while another keeps failing?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Later, Tasha’s Cauldron of Everything gave us psionic-flavored subclasses. The Psi Warrior and Soulknife were great. The full-caster option—the Aberrant Mind Sorcerer—was mechanically fine, but conceptually messy. Like the Great Old One warlock, it mixes “mind power” with external, often cosmic or horror-themed elements."
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s not the fantasy I was looking for."
+        },
+        {
+          "type": "paragraph",
+          "text": "If psychic power is real, it should feel internal—controlled, contained, invisible. Not “you grew tentacles because something touched your brain.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "So instead of trying to fix individual classes, I stepped back and looked at the structure itself."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Pattern Was Already There"
+        },
+        {
+          "type": "paragraph",
+          "text": "D&D already organizes its classes—you just have to zoom out a bit."
+        },
+        {
+          "type": "paragraph",
+          "text": "At first glance, you get the usual split: casters vs. non-casters. That’s useful, but shallow. A wizard and a cleric are both casters, but they don’t feel the same at all."
+        },
+        {
+          "type": "paragraph",
+          "text": "So I stopped looking at mechanics and started looking at function."
+        },
+        {
+          "type": "paragraph",
+          "text": "Four roles show up immediately:"
+        },
+        {
+          "type": "listitem",
+          "text": "Warrior — solves problems by hitting them"
+        },
+        {
+          "type": "paragraph",
+          "text": "Warrior — solves problems by hitting them"
+        },
+        {
+          "type": "listitem",
+          "text": "Adept — solves problems through skill and positioning"
+        },
+        {
+          "type": "paragraph",
+          "text": "Adept — solves problems through skill and positioning"
+        },
+        {
+          "type": "listitem",
+          "text": "Mage — solves problems by reshaping reality"
+        },
+        {
+          "type": "paragraph",
+          "text": "Mage — solves problems by reshaping reality"
+        },
+        {
+          "type": "listitem",
+          "text": "Support — solves problems by enabling others"
+        },
+        {
+          "type": "paragraph",
+          "text": "Support — solves problems by enabling others"
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s the first axis: Job."
+        },
+        {
+          "type": "paragraph",
+          "text": "Then there’s the question of where the power comes from. That gives you the second axis: Domain."
+        },
+        {
+          "type": "paragraph",
+          "text": "D&D already uses three, whether it says so or not:"
+        },
+        {
+          "type": "listitem",
+          "text": "Primal — instinct, nature, raw force"
+        },
+        {
+          "type": "paragraph",
+          "text": "Primal — instinct, nature, raw force"
+        },
+        {
+          "type": "listitem",
+          "text": "Civilization — training, systems, learned knowledge"
+        },
+        {
+          "type": "paragraph",
+          "text": "Civilization — training, systems, learned knowledge"
+        },
+        {
+          "type": "listitem",
+          "text": "Divine — belief, gods, external authority"
+        },
+        {
+          "type": "paragraph",
+          "text": "Divine — belief, gods, external authority"
+        },
+        {
+          "type": "paragraph",
+          "text": "Four jobs. Three domains. Twelve classes."
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s the Player’s Handbook."
+        },
+        {
+          "type": "paragraph",
+          "text": "Civilization Is the Baseline"
+        },
+        {
+          "type": "paragraph",
+          "text": "If you want to understand the system, start with Civilization. It’s the most grounded and the most explicit. (The Cleric is actually the baseline for Support, but it belongs to the Divine domain.)"
+        },
+        {
+          "type": "listitem",
+          "text": "The Fighter is what a Warrior looks like when you train it."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Fighter is what a Warrior looks like when you train it."
+        },
+        {
+          "type": "listitem",
+          "text": "The Rogue is what an Adept looks like navigates society."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Rogue is what an Adept looks like navigates society."
+        },
+        {
+          "type": "listitem",
+          "text": "The Wizard is what a Mage looks like when it learns magic through study."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Wizard is what a Mage looks like when it learns magic through study."
+        },
+        {
+          "type": "listitem",
+          "text": "The Bard is what Support looks like when it lives inside culture."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Bard is what Support looks like when it lives inside culture."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Wizard, especially, clarified something for me:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Spells aren’t vague expressions of power—they’re tools."
+        },
+        {
+          "type": "paragraph",
+          "text": "They’re precise, repeatable, and a little rigid. That’s why they feel so specific. A spellbook isn’t just flavor—it’s a manual. You’re not “feeling” magic, you’re using it."
+        },
+        {
+          "type": "paragraph",
+          "text": "Once that clicked, a lot of other things started to fall into place."
+        },
+        {
+          "type": "paragraph",
+          "text": "Primal and Divine as Contrasts"
+        },
+        {
+          "type": "paragraph",
+          "text": "From there, the other domains are basically deviations from Civilization."
+        },
+        {
+          "type": "paragraph",
+          "text": "Primal strips away structure and replaces it with instinct:"
+        },
+        {
+          "type": "listitem",
+          "text": "The Barbarian (warrior) doesn’t train—he reacts"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Barbarian (warrior) doesn’t train—he reacts"
+        },
+        {
+          "type": "listitem",
+          "text": "The Ranger (adept) doesn’t study social systems—he reads the environment"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Ranger (adept) doesn’t study social systems—he reads the environment"
+        },
+        {
+          "type": "listitem",
+          "text": "The Sorcerer (mage) doesn’t learn spells—he is the source"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Sorcerer (mage) doesn’t learn spells—he is the source"
+        },
+        {
+          "type": "listitem",
+          "text": "The Druid (support) doesn’t control nature—he works with it"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Druid (support) doesn’t control nature—he works with it"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then Divine introduces something external again—but not structured like Civilization. It’s belief, obligation, relationship."
+        },
+        {
+          "type": "listitem",
+          "text": "The Paladin (warrior) acts on conviction"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Paladin (warrior) acts on conviction"
+        },
+        {
+          "type": "listitem",
+          "text": "The Monk (adept) refines skill into enlightenment"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Monk (adept) refines skill into enlightenment"
+        },
+        {
+          "type": "listitem",
+          "text": "The Warlock (mage) borrows power through a pact with god"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Warlock (mage) borrows power through a pact with god"
+        },
+        {
+          "type": "listitem",
+          "text": "The Cleric (support) serving a god/religion, channels power to protect others"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Cleric (support) serving a god/religion, channels power to protect others"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each domain shifts the feel of the same job."
+        },
+        {
+          "type": "paragraph",
+          "text": "The Missing Axis"
+        },
+        {
+          "type": "paragraph",
+          "text": "At this point, everything made sense—except psionics."
+        },
+        {
+          "type": "paragraph",
+          "text": "There was no clean place to put it."
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s when it became obvious what was missing:"
+        },
+        {
+          "type": "paragraph",
+          "text": "All three domains are external."
+        },
+        {
+          "type": "listitem",
+          "text": "The world (Primal)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The world (Primal)"
+        },
+        {
+          "type": "listitem",
+          "text": "Society (Civilization)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Society (Civilization)"
+        },
+        {
+          "type": "listitem",
+          "text": "The divine (Divine)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The divine (Divine)"
+        },
+        {
+          "type": "paragraph",
+          "text": "There was nothing that represented the internal."
+        },
+        {
+          "type": "paragraph",
+          "text": "So I added one:"
+        },
+        {
+          "type": "listitem",
+          "text": "Inner — the domain of the mind"
+        },
+        {
+          "type": "paragraph",
+          "text": "Inner — the domain of the mind"
+        },
+        {
+          "type": "paragraph",
+          "text": "And suddenly, everything snapped into place."
+        },
+        {
+          "type": "paragraph",
+          "text": "Psionics didn’t need to be awkwardly attached to sorcerers or warped into cosmic horror. It just needed its own domain—one that actually matched the fantasy."
+        },
+        {
+          "type": "paragraph",
+          "text": "Why This Order Matters"
+        },
+        {
+          "type": "paragraph",
+          "text": "The domains aren’t just categories—they form a progression:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Primal → Civilization → Divine → Inner"
+        },
+        {
+          "type": "listitem",
+          "text": "First, there’s the world"
+        },
+        {
+          "type": "paragraph",
+          "text": "First, there’s the world"
+        },
+        {
+          "type": "listitem",
+          "text": "Then we organize it"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then we organize it"
+        },
+        {
+          "type": "listitem",
+          "text": "Then we assign meaning to it"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then we assign meaning to it"
+        },
+        {
+          "type": "listitem",
+          "text": "Then we turn inward and examine ourselves"
+        },
+        {
+          "type": "paragraph",
+          "text": "Then we turn inward and examine ourselves"
+        },
+        {
+          "type": "paragraph",
+          "text": "The first three are about what’s outside you.The last one is about what’s inside you."
+        },
+        {
+          "type": "paragraph",
+          "text": "That’s why Inner comes last. It’s not just another category—it’s a shift in perspective."
+        },
+        {
+          "type": "paragraph",
+          "text": "What This Solves"
+        },
+        {
+          "type": "paragraph",
+          "text": "Once you look at classes this way, a few things happen:"
+        },
+        {
+          "type": "listitem",
+          "text": "You can see why some designs feel off"
+        },
+        {
+          "type": "paragraph",
+          "text": "You can see why some designs feel off"
+        },
+        {
+          "type": "listitem",
+          "text": "You can predict what a missing class should look like"
+        },
+        {
+          "type": "paragraph",
+          "text": "You can predict what a missing class should look like"
+        },
+        {
+          "type": "listitem",
+          "text": "You stop needing to invent classes from scratch—they emerge naturally from the grid"
+        },
+        {
+          "type": "paragraph",
+          "text": "You stop needing to invent classes from scratch—they emerge naturally from the grid"
+        },
+        {
+          "type": "paragraph",
+          "text": "And most importantly:"
+        },
+        {
+          "type": "paragraph",
+          "text": "Every class has a clear job and a clear source of power."
+        },
+        {
+          "type": "paragraph",
+          "text": "No overlap. No confusion. No “this kind of feels like a worse version of something else.”"
+        },
+        {
+          "type": "paragraph",
+          "text": "Just clean, intentional design."
+        }
+      ]
+    },
+    "house-rules/shadowdark-primer": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/house-rules/shadowdark-primer",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Shadowdark Primer: What’s Different from 5E?"
+        },
+        {
+          "type": "paragraph",
+          "text": "If you’ve played 5E, you already know 90% of what you need. Shadowdark keeps the same bones—ability scores, AC, HP, d20 checks—but strips the system down to run faster, hit harder, and stay dangerous."
+        },
+        {
+          "type": "paragraph",
+          "text": "Here are the biggest differences you’ll feel at the table:"
+        },
+        {
+          "type": "paragraph",
+          "text": "1.One Action + One Move. That’s It."
+        },
+        {
+          "type": "paragraph",
+          "text": "No bonus actions. No reactions. No opportunity attacks. No extra attacks.On your turn, you do one thing and move. Combat is fast and decisive."
+        },
+        {
+          "type": "paragraph",
+          "text": "2.No Skill Lists"
+        },
+        {
+          "type": "paragraph",
+          "text": "There are no formal skills.Instead, your background gives you advantage when it applies. If it makes sense, you’re better at it. Simple."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Spellcasting is Risky"
+        },
+        {
+          "type": "paragraph",
+          "text": "Spells aren’t “slots.” You make a casting check."
+        },
+        {
+          "type": "listitem",
+          "text": "Success: spell works"
+        },
+        {
+          "type": "paragraph",
+          "text": "Success: spell works"
+        },
+        {
+          "type": "listitem",
+          "text": "Failure: you can’t cast that spell again until you rest"
+        },
+        {
+          "type": "paragraph",
+          "text": "Failure: you can’t cast that spell again until you rest"
+        },
+        {
+          "type": "listitem",
+          "text": "Nat 1: something goes wrong (mishap)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Nat 1: something goes wrong (mishap)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Magic is powerful—but unreliable."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Low HP, Real Danger"
+        },
+        {
+          "type": "paragraph",
+          "text": "Characters are fragile, especially early on.You are not superheroes. Smart play matters more than stats."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Torchlight Matters"
+        },
+        {
+          "type": "paragraph",
+          "text": "Light is tracked in real time (usually 1 hour), and darkness is genuinely dangerous.There is no darkvision—no class or ancestry bypasses the need for light. If the torches go out, you’re in trouble."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Always-On Initiative"
+        },
+        {
+          "type": "paragraph",
+          "text": "Initiative isn’t just for combat—it’s used to manage time at all times. This helps keep things moving and ensures everyone gets a turn to act. It may take a little getting used to outside of combat, but turns are quick and the flow stays consistent"
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Rulings Over Rules"
+        },
+        {
+          "type": "paragraph",
+          "text": "The system expects quick decisions, not rule lookups.If something isn’t covered, we make a call and keep going."
+        },
+        {
+          "type": "paragraph",
+          "text": "8. No Build Complexity"
+        },
+        {
+          "type": "paragraph",
+          "text": "No feats. No long ability trees.Your character is defined by:"
+        },
+        {
+          "type": "listitem",
+          "text": "Class"
+        },
+        {
+          "type": "paragraph",
+          "text": "Class"
+        },
+        {
+          "type": "listitem",
+          "text": "Choices you make at the table"
+        },
+        {
+          "type": "paragraph",
+          "text": "Choices you make at the table"
+        },
+        {
+          "type": "listitem",
+          "text": "Gear (limited by gear slots based on Strength—you can’t carry everything, so what you bring actually matters)"
+        },
+        {
+          "type": "paragraph",
+          "text": "Gear (limited by gear slots based on Strength—you can’t carry everything, so what you bring actually matters)"
+        },
+        {
+          "type": "paragraph",
+          "text": "9. Advantage / Disadvantage is the Main Modifier"
+        },
+        {
+          "type": "paragraph",
+          "text": "No stacking bonuses. No fiddly math.Most situational effects resolve to advantage or disadvantage."
+        },
+        {
+          "type": "paragraph",
+          "text": "10. Player Choices > Character Sheet"
+        },
+        {
+          "type": "paragraph",
+          "text": "Shadowdark leans into exploration and player-driven decisions, with less reliance on skill checks to carry the moment. Because the game is more dangerous, how you explore, the risks you take, and when you push forward or turn back all matter more—your character sheet supports you, but the real impact comes from how you play"
+        },
+        {
+          "type": "paragraph",
+          "text": "Bottom Line"
+        },
+        {
+          "type": "paragraph",
+          "text": "Shadowdark is what happens when you take 5E and remove everything that slows the game down."
+        },
+        {
+          "type": "paragraph",
+          "text": "It’s faster and more dependent on player decisions."
+        }
+      ]
+    },
+    "house-rules/house-rules": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/house-rules/house-rules",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "House Rules"
+        },
+        {
+          "type": "paragraph",
+          "text": "This page serves as a reference for table rulings, clarifications, and homebrew adjustments used in our games. It will be updated over time as we refine the system and settle on consistent interpretations."
+        },
+        {
+          "type": "paragraph",
+          "text": "Design Notes"
+        },
+        {
+          "type": "paragraph",
+          "text": "These rules aim to keep characters durable enough to be fun, while preserving the danger and tension that define the system."
+        },
+        {
+          "type": "paragraph",
+          "text": "Character Creation"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ability Scores"
+        },
+        {
+          "type": "listitem",
+          "text": "Roll 3d6 down the line."
+        },
+        {
+          "type": "paragraph",
+          "text": "Roll 3d6 down the line."
+        },
+        {
+          "type": "listitem",
+          "text": "Any result of 6 or lower is rerolled."
+        },
+        {
+          "type": "paragraph",
+          "text": "Any result of 6 or lower is rerolled."
+        },
+        {
+          "type": "listitem",
+          "text": "If your array does not include at least one score of 15 or higher, you may discard it and roll a new set."
+        },
+        {
+          "type": "paragraph",
+          "text": "If your array does not include at least one score of 15 or higher, you may discard it and roll a new set."
+        },
+        {
+          "type": "listitem",
+          "text": "You may choose to keep an otherwise strong or interesting array, even if it doesn’t meet this threshold."
+        },
+        {
+          "type": "paragraph",
+          "text": "You may choose to keep an otherwise strong or interesting array, even if it doesn’t meet this threshold."
+        },
+        {
+          "type": "paragraph",
+          "text": "Hit Points"
+        },
+        {
+          "type": "listitem",
+          "text": "At level 1, take the maximum value of your hit die, then apply your Constitution modifier."
+        },
+        {
+          "type": "paragraph",
+          "text": "At level 1, take the maximum value of your hit die, then apply your Constitution modifier."
+        },
+        {
+          "type": "listitem",
+          "text": "At higher levels, roll hit points as normal."
+        },
+        {
+          "type": "paragraph",
+          "text": "At higher levels, roll hit points as normal."
+        },
+        {
+          "type": "paragraph",
+          "text": "Background and classes"
+        },
+        {
+          "type": "listitem",
+          "text": "We will use the backgrounds and classes listed on this homepage."
+        },
+        {
+          "type": "paragraph",
+          "text": "We will use the backgrounds and classes listed on this homepage."
+        },
+        {
+          "type": "paragraph",
+          "text": "Death & Dying"
+        },
+        {
+          "type": "listitem",
+          "text": "At 0 hit points, a death timer begins."
+        },
+        {
+          "type": "paragraph",
+          "text": "At 0 hit points, a death timer begins."
+        },
+        {
+          "type": "listitem",
+          "text": "If you take damage while dying, you lose one round from your remaining death timer."
+        },
+        {
+          "type": "paragraph",
+          "text": "If you take damage while dying, you lose one round from your remaining death timer."
+        },
+        {
+          "type": "listitem",
+          "text": "A player may choose to let their character die rather than be saved."
+        },
+        {
+          "type": "paragraph",
+          "text": "A player may choose to let their character die rather than be saved."
+        },
+        {
+          "type": "paragraph",
+          "text": "Guidelines for Magic"
+        },
+        {
+          "type": "paragraph",
+          "text": "These guidelines exist to help integrate the expanded class list into Shadowdark while keeping rulings consistent and easy at the table. When in doubt, use these as a baseline—not strict law."
+        },
+        {
+          "type": "paragraph",
+          "text": "Magic Item Use"
+        },
+        {
+          "type": "paragraph",
+          "text": "Many magic items in Shadowdark are restricted to specific classes. For the purposes of this system, those restrictions are expanded by Job:"
+        },
+        {
+          "type": "listitem",
+          "text": "Mage classes can use items intended for Wizards"
+        },
+        {
+          "type": "paragraph",
+          "text": "Mage classes can use items intended for Wizards"
+        },
+        {
+          "type": "listitem",
+          "text": "Support classes can use items intended for Priests"
+        },
+        {
+          "type": "paragraph",
+          "text": "Support classes can use items intended for Priests"
+        },
+        {
+          "type": "listitem",
+          "text": "Warrior classes can use items intended for Fighters"
+        },
+        {
+          "type": "paragraph",
+          "text": "Warrior classes can use items intended for Fighters"
+        },
+        {
+          "type": "listitem",
+          "text": "Adept classes can use items intended for Thieves"
+        },
+        {
+          "type": "paragraph",
+          "text": "Adept classes can use items intended for Thieves"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a rule of thumb, not a hard restriction. Some items may still require DM judgment, especially when flavor or fiction matters. The goal is to preserve intent, not force perfect mechanical symmetry."
+        },
+        {
+          "type": "paragraph",
+          "text": "Spellcasting Failures"
+        },
+        {
+          "type": "paragraph",
+          "text": "Spellcasting follows standard Shadowdark rules with one key extension based on Job identity:"
+        },
+        {
+          "type": "listitem",
+          "text": "Mage Classes (Wizard, Sorcerer, Mystic, Psion)On a critical failure, roll on the Wizard Mishap table.Mages manipulate reality directly—when that manipulation fails, it backfires."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mage Classes (Wizard, Sorcerer, Mystic, Psion)On a critical failure, roll on the Wizard Mishap table.Mages manipulate reality directly—when that manipulation fails, it backfires."
+        },
+        {
+          "type": "listitem",
+          "text": "Support Classes (Priest, Bard, Seer, Druid)On a critical failure, the spell is lost and must be regained through penance, following Priest rules.Support classes channel power through belief, connection, or external forces—failure requires realignment before power returns."
+        },
+        {
+          "type": "paragraph",
+          "text": "Support Classes (Priest, Bard, Seer, Druid)On a critical failure, the spell is lost and must be regained through penance, following Priest rules.Support classes channel power through belief, connection, or external forces—failure requires realignment before power returns."
+        },
+        {
+          "type": "paragraph",
+          "text": "These rulings reinforce the core distinction:Mages bend reality. Supports are granted access to it."
+        }
+      ]
+    },
+    "house-rules/class-overview": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/house-rules/class-overview",
+      "image": "images/rules/house-rules-class-overview.png",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Class Overview"
+        },
+        {
+          "type": "paragraph",
+          "text": "Design Philosophy: Jobs + Domains = Class"
+        },
+        {
+          "type": "paragraph",
+          "text": "This homebrew uses a simple idea: every class is the result of crossing how a character acts with where their power comes from."
+        },
+        {
+          "type": "paragraph",
+          "text": "Jobs (How You Confront Reality)"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Warrior — confronts reality directly through force, presence, and action"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Adept — navigates reality through skill, awareness, and positioning"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Mage — manipulates reality by bending rules, forces, or perception"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Support — enables others to succeed by enhancing, guiding, or sustaining"
+        },
+        {
+          "type": "paragraph",
+          "text": "Domains (Where Power Comes From)"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Primal — instinct, nature, and the raw world"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Civilization — society, tools, structure, and human systems"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Divine — belief, faith, and higher meaning"
+        },
+        {
+          "type": "paragraph",
+          "text": "- Inner — mind, will, perception, and cognition"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Result: 16 Possible Classes"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each class exists at the intersection of one Job and one Domain. That combination defines both what the class does and how it feels to play."
+        },
+        {
+          "type": "paragraph",
+          "text": "A Warrior in the Divine domain becomes something very different from a Warrior in the Inner domain. An Adept shaped by Civilization behaves nothing like one shaped by instinct. The framework ensures that every class has a clear identity rooted in both action and source."
+        },
+        {
+          "type": "paragraph",
+          "text": "This structure naturally produces 16 distinct class spaces. Some are familiar, some are reinterpretations, and some are entirely new—but all of them follow the same underlying logic. You can see them mapped in the class matrix above. Bolded classes represent my original designs, while the others come from Shadowdark (Kelsey Dionne / The Arcane Library). Not every official Shadowdark class appears here; some overlap within the same Job + Domain space, while others are too setting-specific for this framework (such as Sea Wolf, Desert Rider, Knight of St. Yidris, etc...)."
+        },
+        {
+          "type": "paragraph",
+          "text": "We will only be using the classes on this chart."
+        },
+        {
+          "type": "paragraph",
+          "text": "The classes below are organized by Job—how a character acts when it matters most. Each class also carries a Domain, which shapes the source and flavor of that power. Choose your role first, then explore the different expressions within it."
+        },
+        {
+          "type": "paragraph",
+          "text": "Warriors"
+        },
+        {
+          "type": "paragraph",
+          "text": "Direct confrontation. Strength, presence, and decisive action."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Pit-Fighter (Primal) — A brutal combatant driven by instinct and survival."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Fighter (Civilization) — A disciplined master of weapons and tactics."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Paladin (Divine) — A warrior bound by conviction and sacred purpose."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Kinetic (Inner) — A fighter who channels force ==through sheer will."
+        },
+        {
+          "type": "paragraph",
+          "text": "Adepts"
+        },
+        {
+          "type": "paragraph",
+          "text": "Skill, awareness, and control of position and timing."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Ranger (Primal) — A tracker and hunter attuned to the natural world."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Thief (Civilization) — A specialist in stealth, precision, and opportunity."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Monk (Divine) — A disciplined ascetic who perfects body and spirit."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Soulknife (Inner) — A psychic operative who turns thought into a weapon."
+        },
+        {
+          "type": "paragraph",
+          "text": "Mages"
+        },
+        {
+          "type": "paragraph",
+          "text": "Manipulation of reality through knowledge, power, or perception."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Sorcerer (Primal) — A conduit of raw elemental forces."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Wizard (Civilization) — A scholar who studies and reshapes the laws of magic."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Mystic (Divine) — A wielder of belief who asserts truth onto reality."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Psion (Inner) — A master of the mind who alters thought and perception."
+        },
+        {
+          "type": "paragraph",
+          "text": "Support"
+        },
+        {
+          "type": "paragraph",
+          "text": "Enabling others through guidance, restoration, and influence."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Druid (Primal) — A warden of nature who shapes growth and decay."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Bard (Civilization) — An inspirer who empowers others through word and presence."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Priest (Divine) — A channel of divine power who restores and protects."
+        },
+        {
+          "type": "paragraph",
+          "text": "● Seer (Inner) — A guide of insight who reads and shapes fate and perception."
+        }
+      ]
+    },
+    "house-rules/backgrounds-and-skills": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/house-rules/backgrounds-and-skills",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Notes on Backgrounds and Skills"
+        },
+        {
+          "type": "paragraph",
+          "text": "In Shadowdark, backgrounds act as both story and skill—granting advantage when relevant. Some original options lean heavily on flavor but don’t clearly suggest what a character can do in play."
+        },
+        {
+          "type": "paragraph",
+          "text": "These backgrounds are adjusted to do both. Each one implies a clear set of skills while still leaving room for interpretation. Backgrounds that overlap too closely with class roles have been removed or replaced, so your class defines how you act, and your background reflects where you came from."
+        },
+        {
+          "type": "paragraph",
+          "text": "Backgrounds (Roll d20)"
+        },
+        {
+          "type": "paragraph",
+          "text": "1. Teamster"
+        },
+        {
+          "type": "paragraph",
+          "text": "Hauling goods means knowing how to handle wagons and draft animals, load cargo efficiently, and judge roads and travel conditions."
+        },
+        {
+          "type": "paragraph",
+          "text": "2. Farmer"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with crops, soil, seasons, weather, and livestock comes naturally from working the land."
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Sage"
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of history, lore, symbols, old stories, and obscure subjects comes from a life devoted to study and learning."
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Fisher"
+        },
+        {
+          "type": "paragraph",
+          "text": "Comfortable with small boats and waterways, with practical knowledge of weather, fishing, and preserving a catch."
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Woodcutter"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with forests, timber, axes, climbing, and judging the quality and usefulness of trees."
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Miner"
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of stone, tunnels, underground hazards, and the signs of unstable or workable ground."
+        },
+        {
+          "type": "paragraph",
+          "text": "7. Blacksmith’s Apprentice"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with the forge, metalworking, equipment repair, and judging the quality of weapons, armor, and other metal goods."
+        },
+        {
+          "type": "paragraph",
+          "text": "8. Carpenter"
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of wood construction, supports, joints, repairs, and the ways buildings and structures can fail."
+        },
+        {
+          "type": "paragraph",
+          "text": "9. Mason"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with stone construction, masonry, foundations, and recognizing weaknesses in walls and other structures."
+        },
+        {
+          "type": "paragraph",
+          "text": "10. Sailor"
+        },
+        {
+          "type": "paragraph",
+          "text": "Comfortable with ships and rigging, with practical knowledge of knots, balance, navigation, and life on the water."
+        },
+        {
+          "type": "paragraph",
+          "text": "11. Acolyte"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with religious customs, ceremonies, sacred traditions, and the symbols and practices of the faith."
+        },
+        {
+          "type": "paragraph",
+          "text": "12. Scribe"
+        },
+        {
+          "type": "paragraph",
+          "text": "Skilled with reading and writing, copying documents, organizing texts, and recognizing common forms of written record."
+        },
+        {
+          "type": "paragraph",
+          "text": "13. Merchant’s Assistant"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with goods, prices, inventories, weights and measures, and the everyday practices of buying and selling."
+        },
+        {
+          "type": "paragraph",
+          "text": "14. Cook"
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of ingredients, food preparation, preservation, storage, and recognizing spoiled or contaminated food."
+        },
+        {
+          "type": "paragraph",
+          "text": "15. Healer’s Assistant"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with cleaning wounds, preparing simple remedies, changing dressings, and caring for the sick and injured."
+        },
+        {
+          "type": "paragraph",
+          "text": "16. Stablehand"
+        },
+        {
+          "type": "paragraph",
+          "text": "Comfortable handling horses and other common mounts, with knowledge of feeding, grooming, riding, and animal behavior."
+        },
+        {
+          "type": "paragraph",
+          "text": "17. Butcher"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with dressing animals, preparing and preserving meat, and judging the quality and freshness of food."
+        },
+        {
+          "type": "paragraph",
+          "text": "18. Servant"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with the customs of high society, proper etiquette, household routines, and the complicated social hierarchies of the wealthy."
+        },
+        {
+          "type": "paragraph",
+          "text": "19. Jeweler"
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of gemstones, precious metals, fine craftsmanship, and the subtle signs that distinguish quality work from imitations."
+        },
+        {
+          "type": "paragraph",
+          "text": "20. Potter"
+        },
+        {
+          "type": "paragraph",
+          "text": "Familiarity with clay, pottery, kilns, glazing, and the construction and quality of ceramic goods."
+        }
+      ]
+    },
+    "warrior/pit-fighter": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/warrior/pit-fighter",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Pit-Fighter (Primal Warrior)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Pit-Fighter represents the Primal Warrior: a combatant driven by instinct, survival, and raw physical dominance. Where other warriors rely on training or belief, the Pit-Fighter fights on impulse and experience, making it the most immediate and visceral expression of direct combat."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #2: Red Sands, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        }
+      ]
+    },
+    "warrior/fighter": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/warrior/fighter",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Fighter (Civilization Warrior)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Fighter represents the Civilization Warrior: a master of weapons and tactics shaped by discipline and training. Their strength comes from refined technique and consistency, making them the most reliable and controlled expression of martial power."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark core class. The full class is not reprinted here, but it is available in the free Shadowdark Quickstart Guide and on the Shadowdarklings website. See links below."
+        }
+      ]
+    },
+    "warrior/paladin": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/warrior/paladin",
+      "image": "images/rules/warrior-paladin.png",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Paladin (Divine Warrior)",
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The Paladin represents the Divine Warrior: a champion of conviction who fights through faith, oath, and sacred purpose. Their strength comes not from instinct or training alone, but from belief made manifest, making them the most principled and resolute expression of martial power."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #1: The Lost Citadel, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        }
+      ]
+    },
+    "warrior/kinetic": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/warrior/kinetic",
+      "image": "images/rules/warrior-kinetic.png",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Kinetic (Inner Warrior)",
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The Kinetic represents the Inner Warrior: a combatant who shapes reality through force of will, channeling raw energy into physical impact. Their strength comes from internal power made external, making them the most direct and overwhelming expression of martial force."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #1: The Lost Citadel, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        },
+        {
+          "type": "heading",
+          "text": "Kinetic Surge",
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "You have one surge at the start of combat. Declare the surge after you hit with an attack, before rolling damage. If your surge is +1 damage and half your level to those rolls (round down). Regain your surge when you roll a natural 20 in combat or use your defensive field."
+        }
+      ]
+    },
+    "adept/ranger": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/adept/ranger",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Ranger (Primal Adept)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Ranger represents the Primal Adept: a navigator of the natural world who survives through awareness, tracking, and adaptability. They embody skill shaped by instinct, thriving in motion and responding fluidly to changing environments."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark expansion class. The full class is not reprinted here, but it is available free on the Shadowdarklings website. The Ranger was originally created as a Kickstarter stretch goal and is now freely available as an addition to the core rules. See link below."
+        }
+      ]
+    },
+    "adept/thief": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/adept/thief",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Thief (Civilization Adept)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Thief defines the Civilization Adept: precise, opportunistic, and highly skilled. Their mastery lies in timing, positioning, and exploiting structure, making them the clearest expression of what it means to navigate reality through skill."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark core class. The full class is not reprinted here, but it is available in the free Shadowdark Quickstart Guide and on the Shadowdarklings website. See links below."
+        }
+      ]
+    },
+    "adept/monk": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/adept/monk",
+      "image": "images/rules/adept-monk.png",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Monk (Divine Adept)",
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The Monk represents the Divine Adept: a disciplined practitioner who channels spiritual power through body and mind. Their strength comes from inner mastery and sacred training, making them the most focused and self-reliant expression of adept skill."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #1: The Lost Citadel, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        },
+        {
+          "type": "heading",
+          "text": "Ki Mastery",
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "You can cast the following spells with Wisdom as your spellcasting ability: Cure Wounds, Holy Weapon (self), Protection From Evil (self), and Shield of Faith. You do not need to prepare these spells; they are always available to you."
+        }
+      ]
+    },
+    "adept/soulknife": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/adept/soulknife",
+      "image": "images/rules/adept-soulknife.png",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Soulknife (Inner Adept)",
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The Soulknife represents the Inner Adept: a combatant who shapes reality through the mind itself, manifesting psychic energy into tangible force. Their strength comes from mental dominance and inner power, making them the most direct and overwhelming expression of adept skill."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #1: The Lost Citadel, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        },
+        {
+          "type": "heading",
+          "text": "Detect Intent",
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "Open your mind to nearby intentions. Make a WIS check. On success the focus lasts 5 rounds. On failure the action is wasted and you cannot use it again until rest. On natural 20, duration is doubled and you gain +2 to your next attack roll or ability check."
+        }
+      ]
+    },
+    "mage/sorcerer": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/mage/sorcerer",
+      "image": "images/rules/mage-sorcerer.png",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "Sorcerer (Primal Mage)",
+          "level": 2
+        },
+        {
+          "type": "paragraph",
+          "text": "The Sorcerer represents the Primal Mage: a conduit of raw elemental power who shapes reality through instinct and force of will. Their strength comes from channeling primal energy, making them the most direct and overwhelming expression of magical power."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #1: The Lost Citadel, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        },
+        {
+          "type": "heading",
+          "text": "Overchannel",
+          "level": 3
+        },
+        {
+          "type": "paragraph",
+          "text": "After a failed spellcasting check, you may succeed instead. Take 1d6 + tier damage. If reduced to 0 HP, suffer Mishap."
+        }
+      ]
+    },
+    "mage/wizard": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/mage/wizard",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Wizard (Civilization Mage)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Wizard is the Civilization Mage: a scholar who studies and manipulates the rules of reality through knowledge. Wizards treat spells as tools—specific, learned, and deliberately applied—which gives them unmatched versatility. No other mage matches their breadth, because no other mage approaches magic with the same structured understanding."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark core class. The full class is not reprinted here, but it is available in the free Shadowdark Quickstart Guide and on the Shadowdarklings website. See links below."
+        }
+      ]
+    },
+    "mage/mystic": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/mage/mystic",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Mystic (Divine Mage)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Mystic represents the Divine Mage: one who shapes reality through belief and asserted truth. Rather than studying or channeling power, the Mystic defines it—bending the world through conviction and alignment with higher principles."
+        },
+        {
+          "type": "paragraph",
+          "text": "(Work in progress)"
+        }
+      ]
+    },
+    "mage/psion": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/mage/psion",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Psion (Inner Mage)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Psion represents the Inner Mage: a manipulator of reality through the mind itself. Their power comes from thought, perception, and mental dominance, allowing them to reshape experience and influence the unseen layers of reality."
+        },
+        {
+          "type": "paragraph",
+          "text": "(Work in progress)"
+        }
+      ]
+    },
+    "support/druid": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/support/druid",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Druid (Primal Support)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Druid represents the Primal Support: a warden of nature who enables others through growth, balance, and the forces of the living world. Their strength lies in shaping the environment and sustaining life, supporting the group through the rhythms of nature itself."
+        },
+        {
+          "type": "paragraph",
+          "text": "(Work in progress)"
+        }
+      ]
+    },
+    "support/bard": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/support/bard",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Bard (Civilization Support)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Bard represents the Civilization Support: a figure who empowers others through presence, performance, and inspiration. Their core strength lies in enabling action—lifting allies beyond their limits—making them a pure expression of support through influence rather than direct power."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark expansion class. The full class is not reprinted here, but it is available free on the Shadowdarklings website. The Bard was originally created as a Kickstarter stretch goal and is now freely available as an addition to the core rules. See link below."
+        }
+      ]
+    },
+    "support/priest": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/support/priest",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Priest (Divine Support)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Priest is the Divine Support: a conduit of belief who restores and protects through faith. Their power is granted, not controlled, making them the most consistent and powerful source of healing and divine aid in the system."
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a Shadowdark core class. The full class is not reprinted here, but it is available in the free Shadowdark Quickstart Guide and on the Shadowdarklings website. See links below."
+        }
+      ]
+    },
+    "support/seer": {
+      "url": "https://sites.google.com/view/sd-homebrew-edition/support/seer",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Seer (Inner Support)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Seer represents the Inner Support: a guide rooted in perception, insight, and awareness. Rather than healing through faith or inspiring through presence, the Seer enables others by understanding what is unseen—shaping decisions, outcomes, and the flow of events through clarity of mind."
+        },
+        {
+          "type": "paragraph",
+          "text": "This class originates from Cursed Scroll #3: Midnight Sun, a Shadowdark expansion module. The full class is not reprinted here, but it is available in that publication or for free on the Shadowdarklings website. See link below."
+        }
+      ]
+    }
+  }
+}
