@@ -131,7 +131,7 @@ const SD = (() => {
   const CHEEKY_NAMES = [
     "Bart Simpson", "Lance-o-bass", "Rubber Ducky",
     "Ronald Drumpf", "The Hamburglar", "GigaChad",
-    "Bartholomew the Mild", "Malcom of the Middle", "Brenda Two-Toes",
+    "Bartholomew the Mild", "Malcolm of the Middle", "Brenda Two-Toes",
     "Kevin the Adequate", "Harriet the Spy", "Gary the Fine",
     "Steve the Cat", "Bob the Builder", "Tim the Tool",
     "Dave the Default", "Chad the Generic", "Kool Kyle",
