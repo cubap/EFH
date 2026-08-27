@@ -62,7 +62,11 @@ const SD = (() => {
 
   const roll = sides => Math.floor(Math.random() * sides) + 1
 
-  const statMod = score => Math.floor((score - 10) / 2)
+  // A stat may be a plain number (builder) or an array of every roll made
+  // (randomizer, where the last entry is the final score). Read the final value.
+  const finalStat = value => value.at?.(-1) ?? value
+
+  const statMod = score => Math.floor((finalStat(score) - 10) / 2)
 
   const signed = num => (num >= 0 ? `+${num}` : `${num}`)
 
@@ -192,15 +196,16 @@ const SD = (() => {
     return `
       <h3>${escapeHtml(character.name)} - ${escapeHtml(cls.name)} (Level ${character.level})</h3>
       <div class="sheet-grid">
-        <div class="stat"><span>STR</span><strong>${character.stats.str}</strong><span>mod ${signed(statMod(character.stats.str))}</span></div>
-        <div class="stat"><span>DEX</span><strong>${character.stats.dex}</strong><span>mod ${signed(statMod(character.stats.dex))}</span></div>
-        <div class="stat"><span>CON</span><strong>${character.stats.con}</strong><span>mod ${signed(statMod(character.stats.con))}</span></div>
-        <div class="stat"><span>INT</span><strong>${character.stats.int}</strong><span>mod ${signed(statMod(character.stats.int))}</span></div>
-        <div class="stat"><span>WIS</span><strong>${character.stats.wis}</strong><span>mod ${signed(statMod(character.stats.wis))}</span></div>
-        <div class="stat"><span>CHA</span><strong>${character.stats.cha}</strong><span>mod ${signed(statMod(character.stats.cha))}</span></div>
+        <div class="stat"><span>STR</span><strong>${finalStat(character.stats.str)}</strong><span>mod ${signed(statMod(character.stats.str))}</span></div>
+        <div class="stat"><span>DEX</span><strong>${finalStat(character.stats.dex)}</strong><span>mod ${signed(statMod(character.stats.dex))}</span></div>
+        <div class="stat"><span>CON</span><strong>${finalStat(character.stats.con)}</strong><span>mod ${signed(statMod(character.stats.con))}</span></div>
+        <div class="stat"><span>INT</span><strong>${finalStat(character.stats.int)}</strong><span>mod ${signed(statMod(character.stats.int))}</span></div>
+        <div class="stat"><span>WIS</span><strong>${finalStat(character.stats.wis)}</strong><span>mod ${signed(statMod(character.stats.wis))}</span></div>
+        <div class="stat"><span>CHA</span><strong>${finalStat(character.stats.cha)}</strong><span>mod ${signed(statMod(character.stats.cha))}</span></div>
         <div class="stat"><span>HP</span><strong>${character.hp}/${character.maxHp}</strong></div>
         <div class="stat"><span>XP</span><strong>${character.xp}</strong></div>
       </div>
+      <p class="class-summary">${escapeHtml(cls.summary)}</p>
       <div class="sheet-columns">
         <div>
           <p><strong>Ancestry:</strong> ${escapeHtml(character.ancestry)}</p>
@@ -229,6 +234,7 @@ const SD = (() => {
     deleteBuild,
     getClassById,
     roll,
+    finalStat,
     statMod,
     signed,
     rollStats,

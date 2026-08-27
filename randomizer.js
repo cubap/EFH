@@ -16,6 +16,9 @@ const refs = {
     resultHp: document.getElementById("resultHp"),
     resultTalent: document.getElementById("resultTalent"),
     resultStats: document.getElementById("resultStats"),
+    crappedOutWarning: document.getElementById("crappedOutWarning"),
+    resultSummary: document.getElementById("resultSummary"),
+    resultFeatures: document.getElementById("resultFeatures"),
     rerollBtn: document.getElementById("rerollBtn"),
     saveBtn: document.getElementById("saveBtn"),
     viewerLink: document.getElementById("viewerLink"),
@@ -65,7 +68,15 @@ const CLASS_SURNAMES = {
     paladin: ["Oathkeeper", "Brightblade", "Vow", "Sunheart", "Ironclad", "Dawnbringer", "Hallow", "Shield", "Aegis", "Luminous", "Virtue", "Sanctum", "Radiant", "Zealot", "Champion", "Warden"],
     sorcerer: ["Stormcaller", "Ashborn", "Flame", "Thunder", "Void", "Arcanum", "Pyre", "Gale", "Rune", "Hex", "Ward", "Sigil", "Rift", "Aether", "Mana", "Chant"],
     monk: ["Stonefist", "Quiet", "Stillwater", "Iron", "Barefoot", "Zen", "Lotus", "Willow", "Cinder", "Bamboo", "River", "Mountain", "Cloud", "Wind", "Pebble", "Reed"],
-    kinetic: ["Forceborn", "Pressure", "Wave", "Slam", "Burst", "Impact", "Shock", "Surge", "Pulse", "Quake", "Rumble", "Crash", "Boom", "Thud", "Clash", "Riot"]
+    kinetic: ["Forceborn", "Pressure", "Wave", "Slam", "Burst", "Impact", "Shock", "Surge", "Pulse", "Quake", "Rumble", "Crash", "Boom", "Thud", "Clash", "Riot"],
+    fighter: ["Redmaul", "Grimsteel", "Brawlmark", "Ironmaw", "Cutthorn", "Warbrand", "Helmsunder", "Gritforge", "Bladelean", "Rendbar", "Steelgrim", "Hackfell", "Maulridge", "Grudgeborn", "Breakspire", "Fellmarch"],
+    bard: ["Loreweft", "Songbarrow", "Talehart", "Versewind", "Chordwell", "Mythrun", "Sagehollow", "Rhymeford", "Wisptale", "Quieturn", "Musefen", "Storymere", "Balladthorn", "Echofern", "Harproot", "Lumenreach"],
+    "pit-fighter": ["Scarbrand", "Goreline", "Fistgrave", "Ragemaul", "Bruiseborn", "Chainscar", "Pitmark", "Brawlscar", "Grudgepit", "Maulscar", "Rendcage", "Bloodturn", "Crackjaw", "Slamforge", "Ragebend", "Grimcinder"],
+    priest: ["Purgeborn", "Faithrend", "Lightgrave", "Chantfell", "Ritesunder", "Devoturn", "Psalmbreak", "Holybrand", "Purethorn", "Cleanspire", "Vowreach", "Blessmaw", "Scriptforge", "Hymnward", "Gracebend", "Sanctfell"],
+    ranger: ["Trailthorn", "Wanderfen", "Trackmaw", "Huntwell", "Pathgrim", "Farsunder", "Wildmarch", "Stalkridge", "Roamthorn", "Brushfell", "Fernmark", "Grovelean", "Mossreach", "Thornstride", "Pinegrave", "Hazelrun"],
+    seer: ["Boneweft", "Runegrave", "Starfell", "Fatemark", "Smokeweir", "Bloodrun", "Omenreach", "Gloomspire", "Sightthorn", "Weirdbend", "Prophetmaw", "Ashweft", "Foretell", "Hexmarch", "Visionbrand", "Darkweir"],
+    thief: ["Gutterhand", "Quickpick", "Shadelean", "Slipthorn", "Nightrun", "Cutpalm", "Blinkridge", "Slinkwell", "Fingershard", "Maskbend", "Grinmark", "Prythorn", "Latchfen", "Sneakforge", "Twistmaw", "Clutchgrim"],
+    wizard: ["Spellweft", "Glyphthorn", "Charmridge", "Fellscroll", "Inkbrand", "Starforge", "Mystmarch", "Arcweir", "Wardrun", "Lorebend", "Spellhart", "Fatecinder", "Runelean", "Hexspire", "Manafen", "Astralmark"]
 }
 
 // Cheeky, deliberately inappropriate names used only for the reveal's "wrong
@@ -73,7 +84,7 @@ const CLASS_SURNAMES = {
 const CHEEKY_NAMES = [
     "Bart Simpson", "Lance-o-bass", "Rubber Ducky",
     "Ronald Drumpf", "The Hamburglar", "GigaChad",
-    "Bartholomew the Mild", "Gerald of the Middle", "Brenda Two-Toes",
+    "Bartholomew the Mild", "Malcom of the Middle", "Brenda Two-Toes",
     "Kevin the Adequate", "Harriet the Spy", "Gary the Fine",
     "Steve the Cat", "Bob the Builder", "Tim the Tool",
     "Dave the Default", "Chad the Generic", "Kool Kyle",
@@ -115,29 +126,25 @@ function buildNameSequence(ancestry, classId, realName) {
 }
 
 // House rule: 3d6 down the line, reroll any 6 or lower, require at least one 15+.
+// Read the final value of a stat. Each stat is stored as an array of every
+// roll made (so a reroll's history is visible); the last entry is the score.
+const finalStat = value => value.at?.(-1) ?? value
+
 function rollStatsHouseRule() {
+    // Roll one stat: 3d6, reroll if the total is 6 or lower. Returns an array
+    // of every roll made so the reroll history is visible (last value is final).
     const rollOne = () => {
+        const rolls = []
         let value = SD.roll(6) + SD.roll(6) + SD.roll(6)
+        rolls.push(value)
         while (value <= 6) {
             value = SD.roll(6) + SD.roll(6) + SD.roll(6)
+            rolls.push(value)
         }
-        return value
+        return rolls
     }
 
-    for (let attempt = 0; attempt < 20; attempt++) {
-        const stats = {
-            str: rollOne(),
-            dex: rollOne(),
-            con: rollOne(),
-            int: rollOne(),
-            wis: rollOne(),
-            cha: rollOne()
-        }
-        const hasHigh = Object.values(stats).some(v => v >= 15)
-        if (hasHigh) return stats
-    }
-    // Fallback: force a 15+ on the lowest score so the array is usable.
-    const stats = {
+    return {
         str: rollOne(),
         dex: rollOne(),
         con: rollOne(),
@@ -145,10 +152,6 @@ function rollStatsHouseRule() {
         wis: rollOne(),
         cha: rollOne()
     }
-    const keys = Object.keys(stats)
-    const lowest = keys.reduce((a, b) => (stats[a] <= stats[b] ? a : b))
-    stats[lowest] = Math.max(stats[lowest], 15)
-    return stats
 }
 
 // Weighted class selection based on rolled stats.
@@ -160,7 +163,7 @@ function pickWeightedClass(stats) {
         const focus = cls.focus ?? []
         if (focus.length === 0) return { cls, weight: 1 }
 
-        const mods = focus.map(attr => SD.statMod(stats[attr]))
+        const mods = focus.map(attr => SD.statMod(finalStat(stats[attr])))
         // Remove classes whose focus attribute is below 10 (negative modifier).
         if (mods.some(mod => mod < 0)) return { cls, weight: 0 }
         // Boost classes whose focus attribute is +2 or higher.
@@ -194,7 +197,11 @@ function rollCharacter() {
     const deity = deities.length ? pick(deities) : "-"
 
     // 4. HP is deterministic: max at level 1 = hit die + CON modifier.
-    const hp = Math.max(1, cls.hitDie + SD.statMod(stats.con))
+    const hp = Math.max(1, cls.hitDie + SD.statMod(finalStat(stats.con)))
+
+    // 5b. No stat reached 15+ — the roll "crapped out". Keep it, but flag it so
+    // the UI can show a warning and offer a free reroll.
+    const crappedOut = !Object.values(stats).some(v => finalStat(v) >= 15)
 
     // 5. Rolled talent from the class's talent table.
     const talent = SD.rollTalent(cls.talents)
@@ -216,6 +223,7 @@ function rollCharacter() {
         xp: 0,
         hp,
         maxHp: hp,
+        crappedOut,
         stats,
         notes: [],
         talentHistory: talent ? [{ level: 1, result: talent }] : []
@@ -231,12 +239,29 @@ function render(character) {
     const order = ["str", "dex", "con", "int", "wis", "cha"]
     refs.resultStats.innerHTML = order
         .map(stat => {
-            const value = character.stats[stat]
+            const rolls = character.stats[stat]
+            const value = finalStat(rolls)
             const mod = SD.statMod(value)
             const signed = mod >= 0 ? `+${mod}` : `${mod}`
-            return `<div class="stat reveal"><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`
+            const historyAttr = Array.isArray(rolls) && rolls.length > 1 ? ` data-history='${JSON.stringify(rolls)}'` : ""
+            return `<div class="stat reveal"${historyAttr}><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`
         })
         .join("")
+
+    // Build the features section (class features + ancestry traits).
+    const ancestry = ANCESTRY_OPTIONS.find(a => a.name === character.ancestry)
+    const classFeatures = (cls?.features ?? [])
+        .map(f => `<div class="feature"><strong>${SD.escapeHtml(f.title)}</strong><p>${SD.escapeHtml(f.text)}</p></div>`)
+        .join("")
+    const ancestryTraits = (ancestry?.traits ?? [])
+        .map(t => `<div class="feature"><strong>${SD.escapeHtml(t.title)}</strong><p>${SD.escapeHtml(t.text)}</p></div>`)
+        .join("")
+    refs.resultFeatures.innerHTML = `
+        <h4>Class Features</h4>${classFeatures}
+        <h4>Ancestry Traits</h4>${ancestryTraits}
+    `
+    // Mark each feature for staggered reveal (hidden until popped in).
+    refs.resultFeatures.querySelectorAll(".feature").forEach(el => el.classList.add("reveal"))
 
     // Links only work once saved; point at the current id placeholder.
     refs.viewerLink.href = "characters.html"
@@ -247,23 +272,29 @@ function render(character) {
     // suggested name as the final flourish.
     const steps = [
         ...[...refs.resultStats.querySelectorAll(".stat")].map(el => ({ el, stat: true })),
+        { el: refs.crappedOutWarning, warning: true },
         { el: refs.resultClass, value: cls?.name ?? character.classId },
+        { el: refs.resultSummary, value: cls?.summary ?? "" },
         { el: refs.resultAncestry, value: character.ancestry },
         { el: refs.resultAlignment, value: character.alignment },
         { el: refs.resultBackground, value: character.background },
         { el: refs.resultDeity, value: character.deity },
         { el: refs.resultTalent, value: character.talentHistory[0]?.result ?? "None rolled" },
         { el: refs.resultHp, value: `${character.hp} (max ${character.maxHp})` },
-        { el: refs.resultName, name: true, sequence: character.nameSequence }
+        { el: refs.resultName, name: true, sequence: character.nameSequence, onComplete: () => revealFeatures(gen) }
     ]
 
     // Reset any state from a previous roll: text elements are persistent DOM
     // nodes (only the stat boxes are rebuilt), so clear is-in and their text.
     steps.forEach(step => {
         step.el.classList.remove("is-in", "rolling")
-        if (!step.stat) step.el.textContent = "—"
+        if (!step.stat && !step.warning) step.el.textContent = "—"
     })
     steps.forEach(step => step.el.classList.add("reveal"))
+    refs.resultFeatures.hidden = true
+    refs.resultFeatures.querySelectorAll(".feature").forEach(el => el.classList.remove("is-in"))
+    refs.crappedOutWarning.hidden = !character.crappedOut
+    refs.crappedOutWarning.classList.remove("is-in")
     refs.resultPanel.hidden = false
 
     steps.forEach((step, index) => {
@@ -274,15 +305,33 @@ function render(character) {
                 flickerStat(step.el, gen)
                 return
             }
+            if (step.warning) {
+                // Only shown when the roll crapped out; pop it in after the stats land.
+                if (!character.crappedOut) return
+                step.el.classList.add("is-in")
+                return
+            }
             if (step.name) {
                 // Type through a sequence of wrong names, then settle on the real one
                 // (last in the sequence so it is typed once and left in place).
-                typeOutName(step.el, step.sequence, gen)
+                typeOutName(step.el, step.sequence, gen, step.onComplete)
                 return
             }
             step.el.textContent = step.value
             step.el.classList.add("is-in")
         }, delay)
+    })
+}
+
+// Reveal feature cards one at a time after the name has been typed.
+function revealFeatures(gen) {
+    refs.resultFeatures.hidden = false
+    const features = [...refs.resultFeatures.querySelectorAll(".feature")]
+    features.forEach((el, i) => {
+        setTimeout(() => {
+            if (gen !== revealGeneration) return
+            el.classList.add("is-in")
+        }, 200 + i * 350)
     })
 }
 
@@ -295,7 +344,7 @@ const DELETE_SPEED_MS = 28
 const WRONG_HOLD_MS = 1400
 const CURSOR_BLINK_MS = 380
 
-function typeOutName(el, sequence, gen) {
+function typeOutName(el, sequence, gen, onComplete) {
     el.classList.add("is-in", "typing")
     const names = sequence && sequence.length ? sequence : ["—"]
     let attempt = 0
@@ -319,6 +368,7 @@ function typeOutName(el, sequence, gen) {
             if (isFinal) {
                 el.textContent = target
                 el.classList.remove("typing")
+                onComplete?.()
                 return
             }
             // Hold on the wrong name with a blinking cursor, then delete and move on.
@@ -367,9 +417,18 @@ function typeOutName(el, sequence, gen) {
 }
 
 // Rapidly flicker a stat's value through random rolls, then settle on the final score.
+// If the stat has a reroll history (stored as data-history), run the reroll animation
+// instead: show each low roll, glitch the card, toss the value off-screen, and reroll.
 function flickerStat(el, gen) {
     const strong = el.querySelector("strong")
     const final = Number(strong.dataset.final)
+    const history = el.dataset.history ? JSON.parse(el.dataset.history) : null
+
+    if (history && history.length > 1) {
+        rerollStat(el, strong, history, gen)
+        return
+    }
+
     el.classList.add("rolling")
     const start = performance.now()
     let last = 0
@@ -388,6 +447,99 @@ function flickerStat(el, gen) {
         requestAnimationFrame(tick)
     }
     requestAnimationFrame(tick)
+}
+
+// Animate a stat with reroll history. The REAL card is the anchor and never
+// moves: it shows each low roll in red, then rerolls in place. A CLONED card is
+// the one that pops out, rolls to its short edge, tips over, and fades — carrying
+// the low value with it. Settle on the final value.
+function rerollStat(el, strong, history, gen) {
+    let index = 0
+
+    const showRoll = () => {
+        if (gen !== revealGeneration) return
+        const value = history[index]
+        const isFinal = index === history.length - 1
+
+        // Freeze the card's reveal animation and show the low value in red.
+        el.classList.add("rolling", "reroll-hold")
+        strong.textContent = value
+
+        if (isFinal) {
+            // Settle on the final value after a beat.
+            setTimeout(() => {
+                if (gen !== revealGeneration) return
+                el.classList.remove("rolling", "reroll-hold")
+                el.classList.add("is-in")
+            }, 400)
+            return
+        }
+
+        // Hold the low value on screen for a beat, then pop a cloned card out to
+        // discard it while the real card rerolls in place.
+        setTimeout(() => {
+            if (gen !== revealGeneration) return
+            tossCard(el, value)
+            index++
+            showRoll()
+        }, 550)
+    }
+
+    showRoll()
+}
+
+// Clone the stat card, overlay it on the real one, and animate the clone popping
+// out, rolling to its short edge, tipping over, and fading. The real card is
+// untouched and rerolls in place underneath.
+function tossCard(statEl, value) {
+    const rect = statEl.getBoundingClientRect()
+
+    // Clone the real card first (before degrading it) so the clone is a clean
+    // copy that the toss animation can fully control.
+    const clone = statEl.cloneNode(true)
+    clone.classList.remove("reveal", "is-in", "rolling", "reroll-hold", "reroll-degraded")
+    clone.style.removeProperty("--reroll-count")
+    clone.classList.add("tossed-card")
+    clone.style.position = "fixed"
+    clone.style.left = `${rect.left}px`
+    clone.style.top = `${rect.top}px`
+    clone.style.width = `${rect.width}px`
+    clone.style.margin = "0"
+    // Make sure the clone shows the low value being discarded.
+    clone.querySelector("strong").textContent = value
+    document.body.appendChild(clone)
+
+    // Each reroll degrades the real card a little: it gets a touch more uneven
+    // and picks up a small shadow. The effect grows noticeably over 3-4 rerolls.
+    const rerolls = Number(statEl.dataset.rerollCount ?? 0) + 1
+    statEl.dataset.rerollCount = rerolls
+    statEl.classList.add("reroll-degraded")
+    statEl.style.setProperty("--reroll-count", rerolls)
+    statEl.style.setProperty("--reroll-dir",rerolls % 2 ? -1 : 1)
+
+    // Pivot the card on its bottom corner so it swings like a card tipping over
+    // on a table (top-down view), rather than turning away from the viewer.
+    const dir = Math.random() > 0.5 ? 1 : -1
+    clone.style.transformOrigin = dir === 1 ? "100% 100%" : "0% 100%"
+
+    const anim = clone.animate(
+        [
+            // 0%: sits exactly over the real card.
+            { transform: "perspective(600px) rotateZ(0deg) rotateX(0deg)", opacity: 1, offset: 0, easing: "ease-in" },
+            // 8%: spike top-right and bottom-left corners way out.
+            { transform: `perspective(600px) rotateZ(0deg) rotateX(0deg) scale(2.2, 0.4) skewX(${dir * 35}deg) skewY(${dir * 20}deg)`, opacity: 1, offset: 0.08, easing: "ease-out" },
+            // 16%: snap back to normal shape.
+            { transform: "perspective(600px) rotateZ(0deg) rotateX(0deg)", opacity: 1, offset: 0.16, easing: "ease-out" },
+            // 45%: pivoted on the bottom corner — "up" now points left/right,
+            // standing on its short edge.
+            { transform: `perspective(600px) rotateZ(${dir * 90}deg) rotateX(0deg)`, opacity: 1, offset: 0.45, easing: "cubic-bezier(0.55, 0, 1, 0.45)" },
+            // 100%: falls flat on its lower edge, accelerating with gravity —
+            // only the short edge is visible.
+            { transform: `perspective(600px) rotateZ(${dir * 95}deg) rotateY(${dir * 90}deg)`, opacity: 0, offset: 1 }
+        ],
+        { duration: 1800, fill: "forwards" }
+    )
+    anim.onfinish = () => clone.remove()
 }
 
 function saveCurrent() {
