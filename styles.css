@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Permanent+Marker&display=swap");
 
 @font-face {
   font-family: "PickysideGrunge";
@@ -1256,7 +1256,10 @@ fieldset {
 
 .result-head h2 {
   margin: 0;
-  font-family: "UnifrakturMaguntia", serif;
+  font-family: "Permanent Marker", "Segoe Print", cursive;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
 }
 
 .result-tags {

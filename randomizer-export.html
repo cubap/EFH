@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadowdark - Character Export</title>
+  <style>
+@import url("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Permanent+Marker&display=swap");
+
+    :root {
+      --paper: #f1efe6;
+      --paper-deep: #ddd8cb;
+      --ink: #17150f;
+      --line: #2d2a26;
+      --edge-soft: #8e877c;
+      --shadow: rgba(0, 0, 0, 0.22);
+      --gold: #a7802d;
+      --gold-soft: rgba(167, 128, 45, 0.18);
+      --panel: rgba(255,255,255,0.8);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(0,0,0,0.10) 0, rgba(0,0,0,0) 36%),
+        linear-gradient(130deg, #f6f3ee, #e3dfd6 42%, #d8d0c2 100%);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .page {
+      width: min(760px, 100%);
+      background: rgba(255,255,255,0.54);
+      border: 2px solid var(--line);
+      box-shadow: 0 12px 32px var(--shadow);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .wrap {
+      padding: 20px 22px 18px;
+    }
+
+    .header {
+      border-bottom: 2px solid var(--line);
+      background: linear-gradient(120deg, rgba(0,0,0,0.86), rgba(26,25,22,0.94));
+      color: #f8f5ee;
+      padding: 18px 22px 14px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      opacity: 0.8;
+      font-family: "Cinzel", Georgia, serif;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-family: "UnifrakturMaguntia", "Cinzel", serif;
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .lede {
+      margin: 12px 0 0;
+      font-size: 0.96rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 2px solid var(--line);
+      border-radius: 4px;
+      padding: 0.7rem 1.1rem;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: #f7f3ed;
+      color: var(--ink);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn--gold {
+      background: linear-gradient(180deg, #d8b35d, #b6842d);
+      color: #120f0b;
+    }
+    .btn--paper { background: rgba(255,255,255,0.7); }
+
+    .panel {
+      margin-top: 18px;
+      padding: 14px 0 0;
+    }
+
+    .result-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.6rem;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-head h2 {
+      margin: 0;
+      font-family: "Permanent Marker", "Comic Sans MS", cursive;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      min-height: 1.2em;
+    }
+
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 0.15rem 0.5rem;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    .result-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+    }
+
+    .result-meta dt {
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.65;
+    }
+
+    .result-meta dd {
+      margin: 0.15rem 0 0;
+      font-size: 0.95rem;
+    }
+
+    .result-stats {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 560px) {
+      .result-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .stat {
+      border: 1px solid var(--edge-soft);
+      border-radius: 2px;
+      padding: 0.45rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.12rem;
+      text-align: center;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .stat span:first-child {
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      text-transform: uppercase;
+    }
+
+    .stat strong {
+      font-size: 1.35rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat span:last-child {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .reveal {
+      opacity: 0.45;
+      animation: reveal-pulse 1.1s ease-in-out infinite;
+    }
+
+    .result-meta dd.reveal,
+    .result-head h2.reveal,
+    .tag.reveal,
+    .stat.reveal {
+      display: inline-block;
+    }
+
+    .reveal.is-in {
+      opacity: 1;
+      animation: reveal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .reveal.typing {
+      animation: none;
+      min-height: 1.2em;
+    }
+
+    .stat.rolling strong {
+      color: #8a1c1c;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @keyframes reveal-pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.65; }
+    }
+
+    @keyframes reveal-pop {
+      0% { opacity: 0; transform: scale(0.96); }
+      55% { opacity: 1; transform: scale(1.04); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .hint {
+      margin: 8px 0 0;
+      opacity: 0.82;
+      font-size: 0.9rem;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(12px);
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(22, 18, 13, 0.94);
+      color: #f4efe7;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 0.7rem 1rem;
+      font-family: "Cinzel", Georgia, serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast" aria-live="polite">Link opened in new tab</div>
+
+  <div class="page">
+    <header class="header">
+      <p class="eyebrow">Shadowdark Homebrew Edition</p>
+      <h1>Character Export</h1>
+      <p class="lede">One-click character generator for sharing a saved roll via a custom link.</p>
+    </header>
+
+    <main class="wrap">
+      <section class="panel">
+        <div class="controls">
+          <button id="randomizeBtn" class="btn btn--gold" type="button">Roll a Character</button>
+          <button id="saveBtn" class="btn btn--paper" type="button">Save / Share Link</button>
+        </div>
+        <p class="hint">Save your rolls as a custom URL in another tab.</p>
+      </section>
+
+      <section class="panel" id="resultPanel" hidden>
+        <div class="result-head">
+          <h2 id="resultName">—</h2>
+          <div class="result-tags">
+            <span id="resultClass" class="tag"></span>
+            <span id="resultAncestry" class="tag"></span>
+            <span id="resultAlignment" class="tag"></span>
+          </div>
+        </div>
+
+        <dl class="result-meta">
+          <div><dt>Background</dt><dd id="resultBackground">—</dd></div>
+          <div><dt>Deity</dt><dd id="resultDeity">—</dd></div>
+          <div><dt>Hit Points</dt><dd id="resultHp">—</dd></div>
+          <div><dt>Talent (2d6)</dt><dd id="resultTalent">—</dd></div>
+        </dl>
+
+        <div class="result-stats" id="resultStats"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const CLASS_DATA = [
+      {
+        id: "soulknife",
+        name: "Soulknife",
+        hitDie: 4,
+        focus: ["dex", "wis"],
+        talents: [
+          { roll: "2", effect: "Deal +1d6 damage with psychic blades" },
+          { roll: "3-6", effect: "+1 attacks and damage with psychic dagger" },
+          { roll: "7-9", effect: "+2 Dexterity or Wisdom" },
+          { roll: "10-11", effect: "Gain one advantage on one Detect Intent application" },
+          { roll: "12", effect: "Choose a talent or +2 points to distribute to stats" }
+        ]
+      },
+      {
+        id: "paladin",
+        name: "Paladin",
+        hitDie: 8,
+        focus: ["str", "cha"],
+        talents: [
+          { roll: "2", effect: "Choose armor type and gain +1 AC from that armor" },
+          { roll: "3-6", effect: "+1 to melee attacks and damage" },
+          { roll: "7-9", effect: "+2 Strength, Charisma, or +1 spellcasting checks" },
+          { roll: "10-11", effect: "Learn a priest spell with range self if tier allows; cast with Charisma" },
+          { roll: "12", effect: "Choose a talent or +2 points to distribute to stats" }
+        ]
+      },
+      {
+        id: "sorcerer",
+        name: "Sorcerer",
+        hitDie: 4,
+        focus: ["cha"],
+        talents: [
+          { roll: "2", effect: "+1 damage to spells" },
+          { roll: "3-7", effect: "+2 Charisma or +1 spellcasting checks" },
+          { roll: "8-9", effect: "Advantage on one shape at a tier" },
+          { roll: "10-11", effect: "Learn one wizard spell of any tier you know" },
+          { roll: "12", effect: "Choose a talent or +2 points to distribute to stats" }
+        ]
+      },
+      {
+        id: "monk",
+        name: "Monk",
+        hitDie: 6,
+        focus: ["dex", "wis"],
+        talents: [
+          { roll: "2", effect: "Learn one spell from Ki Mastery list and cast with Wisdom (DC 11)" },
+          { roll: "3-7", effect: "+1 attack roll and damage" },
+          { roll: "8-11", effect: "+2 Dexterity or Wisdom, or +1 AC" },
+          { roll: "12", effect: "Choose a talent or +2 points to distribute to stats" }
+        ]
+      },
+      {
+        id: "kinetic",
+        name: "Kinetic",
+        hitDie: 6,
+        focus: ["con"],
+        talents: [
+          { roll: "2", effect: "Kinetic Burst deals 1d6 damage" },
+          { roll: "3-6", effect: "Your attacks deal +1 damage" },
+          { roll: "7-9", effect: "+2 Strength or Constitution, or +1 to attacks" },
+          { roll: "10-11", effect: "Learn one spell from Kinetic spell list and cast with Constitution (DC 11)" },
+          { roll: "12", effect: "Choose a talent or +2 points to distribute to stats" }
+        ]
+      }
+    ];
+
+    const ANCESTRY_OPTIONS = [
+      { name: "Half-Orc" },
+      { name: "Elf" },
+      { name: "Human" },
+      { name: "Dwarf" },
+      { name: "Goblin" },
+      { name: "Halfling" }
+    ];
+
+    const BACKGROUND_OPTIONS = [
+      "1 Urchin", "2 Wanted", "3 Cult Initiate", "4 Thieves' Guild", "5 Banished", "6 Orphaned",
+      "7 Wizard's Apprentice", "8 Jeweler", "9 Herbalist", "10 Barbarian", "11 Mercenary", "12 Sailor",
+      "13 Acolyte", "14 Soldier", "15 Ranger", "16 Scout", "17 Minstrel", "18 Scholar", "19 Noble", "20 Chirurgeon"
+    ];
+
+    const ALIGNMENT_DEITIES = {
+      Lawful: ["Madeera (creation & order)", "Terragnis (honor & justice)"],
+      Neutral: ["Gede (revelry & nature)", "Ord (knowledge & wisdom)"],
+      Chaotic: ["Memnon (destruction & chaos)", "Ramlaat (strength & war)", "Shune (sorcery & ambition)"]
+    };
+
+    const refs = {
+      randomizeBtn: document.getElementById("randomizeBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      toast: document.getElementById("toast"),
+      resultPanel: document.getElementById("resultPanel"),
+      resultName: document.getElementById("resultName"),
+      resultClass: document.getElementById("resultClass"),
+      resultAncestry: document.getElementById("resultAncestry"),
+      resultAlignment: document.getElementById("resultAlignment"),
+      resultBackground: document.getElementById("resultBackground"),
+      resultDeity: document.getElementById("resultDeity"),
+      resultHp: document.getElementById("resultHp"),
+      resultTalent: document.getElementById("resultTalent"),
+      resultStats: document.getElementById("resultStats")
+    };
+
+    const REVEAL_STAGGER_MS = 900;
+    const ROLL_FLICKER_MS = 600;
+    let revealGeneration = 0;
+    let current = null;
+    let loadedFromShare = false;
+
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      const shared = params.get("share");
+      loadedFromShare = Boolean(shared);
+
+      refs.saveBtn.hidden = true;
+      refs.randomizeBtn.textContent = "Roll a Character";
+      refs.resultPanel.hidden = true;
+
+      if (shared) {
+        try {
+          current = decodeShare(shared);
+          render(current, { skipAnimation: true });
+          refs.randomizeBtn.textContent = "Roll Again";
+          refs.saveBtn.hidden = true;
+          return;
+        } catch (error) {
+          console.warn("Unable to decode shared character:", error);
+          current = null;
+          refs.resultPanel.hidden = true;
+        }
+      }
+
+      refs.randomizeBtn.addEventListener("click", () => {
+        current = rollCharacter();
+        render(current);
+      });
+
+      refs.saveBtn.addEventListener("click", saveCurrent);
+    }
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    const FIRST_NAME_PATTERNS = {
+      "Half-Orc": () => `${pick(["Gor", "Ulf", "Brek", "Torv", "Drek", "Mug", "Rur", "Krag", "Hro", "Varg", "Skar", "Durg", "Bolg", "Thur", "Grim", "Rag"])}${pick(["gar", "rik", "mund", "grim", "nulf", "drek", "ur", "mong", "rak", "kar", "strom", "ox", "spit", "ulf", "tsar", "rong"])}`,
+      Elf: () => `${pick(["Ael", "Syl", "Fae", "Lir", "Nym", "Thal", "Vael", "Ily", "Elu", "Sera", "Lune", "Fael", "Nael", "Thir", "Vael", "Ily"])}${pick(["wen", "ara", "ion", "ith", "ael", "ora", "wen", "aria", "io'un", "e'eth", "æl", "ira", "wan", "iora", "aun", "iah"])}`,
+      Human: () => `${pick(["Al", "Bran", "Cor", "Dar", "El", "Gar", "Hal", "Jo", "Mar", "Tha", "Ren", "Sol", "Var", "Kel", "Tor", "Lis"])}${pick(["win", "ard", "ett", "ina", "ert", "eth", "wen", "ard", "as", "una", "art", "ath", "wan", "ard", "ald", "iah"])}`,
+      Dwarf: () => `${pick(["Bor", "Dun", "Gim", "Thor", "Bal", "Dur", "Kaz", "Brum", "Gor", "Thrak", "Bel", "Dorg", "Krum", "Fund", "Grim", "Thol"])}${pick(["in", "um", "ak", "or", "an", "lin", "lum", "lak", "lor", "ran", "rin", "rum", "rock", "brow"])}`,
+      Goblin: () => `${pick(["Zik", "Nib", "Grik", "Snek", "Plik", "Zog", "Zuk", "Nab", "Grak", "Snak", "Plok", "Zeg", "Zit", "Knob", "Trik", "Birk"])}${pick(["o", "ik", "ur", "ek", "ob", "", "ky", "s", "le", "kin", "t", "at", "ar"])}`,
+      Halfling: () => `${pick(["Pip", "Tob", "Ros", "Wil", "Fen", "Dot", "Bil", "Nim", "Cor", "Sam", "Len", "Hob", "Ril", "Top", "Mos", "Wen"])}${pick(["kin", "by", "ina", "let", "wick", "berry", "ton", "bin", "well", "ford", "burr", "hill", "mere", "low", "brook", "field"])}${Math.random() < 0.5 ? " " + pick(["Two-Boots", "Long-Bean", "Quick-Pick", "Moss-Back", "Sunny-Field", "Three-Toes", "Mud-Feet", "Bramble-Back", "Clover-Leaf", "Thistle-Top", "Pebble-Toe", "Fern-Whisker"]) : ""}`
+    };
+
+    const CLASS_SURNAMES = {
+      soulknife: ["Mindblade", "Whisper", "Veil", "Hollow", "Grimm", "Shadow", "Silence", "Dream", "Phantom", "Echo", "Wraith", "Mirage", "Specter", "Umbral", "Nocturne", "Gloom"],
+      paladin: ["Oathkeeper", "Brightblade", "Vow", "Sunheart", "Ironclad", "Dawnbringer", "Hallow", "Shield", "Aegis", "Luminous", "Virtue", "Sanctum", "Radiant", "Zealot", "Champion", "Warden"],
+      sorcerer: ["Stormcaller", "Ashborn", "Flame", "Thunder", "Void", "Arcanum", "Pyre", "Gale", "Rune", "Hex", "Ward", "Sigil", "Rift", "Aether", "Mana", "Chant"],
+      monk: ["Stonefist", "Quiet", "Stillwater", "Iron", "Barefoot", "Zen", "Lotus", "Willow", "Cinder", "Bamboo", "River", "Mountain", "Cloud", "Wind", "Pebble", "Reed"],
+      kinetic: ["Forceborn", "Pressure", "Wave", "Slam", "Burst", "Impact", "Shock", "Surge", "Pulse", "Quake", "Rumble", "Crash", "Boom", "Thud", "Clash", "Riot"]
+    };
+
+    const CHEEKY_NAMES = [
+      "Bart Simpson", "Lance-o-bass", "Rubber Ducky", "Ronald Drumpf", "The Hamburglar", "GigaChad",
+      "Bartholomew the Mild", "Gerald of the Middle", "Brenda Two-Toes", "Kevin the Adequate", "Harriet the Spy",
+      "Gary the Fine", "Steve the Cat", "Bob the Builder", "Tim the Tool", "Dave the Default", "Chad the Generic",
+      "Kool Kyle", "Brenda the Bland", "Gerald of SOHO", "Great Scott"
+    ];
+
+    const ABSURD_NAMES = [
+      "Piss-ant the Puny", "Unfuckable von Limp", "Cunt Smallprick", "Sir Cumference the Soft", "Brenda the Unfuckable",
+      "Gerald of the Impure Taint", "Bartholomew the Mildew", "Osric the Damp", "Mildred Saddlebags", "Clovis Gutterslut",
+      "Gerald the Uncircumsized", "Bramble the Moist", "Tilde Topleft", "Dr. Cosby", "Guzzler Superior",
+      "Daphne Mapletwat", "Gimli the Unlegged", "Jargon Fountain", "Unrandomized Selection", "Drop Tables", "😴👯‍♀️👯‍♀️ 💀🔥"
+    ];
+
+    const SD = {
+      roll(sides) {
+        return Math.floor(Math.random() * sides) + 1;
+      },
+      statMod(value) {
+        return Math.floor((value - 10) / 2);
+      },
+      getClassById(id) {
+        return CLASS_DATA.find(item => item.id === id) ?? null;
+      },
+      rollTalent(talents) {
+        const total = this.roll(6) + this.roll(6);
+        const match = talents.find(item => {
+          if (!item.roll.includes("-")) return Number(item.roll) === total;
+          const [start, end] = item.roll.split("-").map(Number);
+          return total >= start && total <= end;
+        });
+        return match ? `${total}: ${match.effect}` : `${total}: no matching talent`;
+      }
+    };
+
+    function generateName(ancestry, classId) {
+      const first = (FIRST_NAME_PATTERNS[ancestry] ?? FIRST_NAME_PATTERNS.Human)();
+      const surnames = CLASS_SURNAMES[classId] ?? ["Adventurer"];
+      return `${first} ${pick(surnames)}`;
+    }
+
+    function buildNameSequence(ancestry, classId, realName) {
+      const otherAncestries = Object.keys(FIRST_NAME_PATTERNS).filter(a => a !== ancestry);
+      const otherClasses = Object.keys(CLASS_SURNAMES).filter(c => c !== classId);
+      const wrongName = generateName(pick(otherAncestries), pick(otherClasses));
+      return [wrongName, pick(CHEEKY_NAMES), pick(ABSURD_NAMES), realName];
+    }
+
+    function rollStatsHouseRule() {
+      const rollOne = () => {
+        let value = SD.roll(6) + SD.roll(6) + SD.roll(6);
+        while (value <= 6) {
+          value = SD.roll(6) + SD.roll(6) + SD.roll(6);
+        }
+        return value;
+      };
+
+      for (let attempt = 0; attempt < 20; attempt++) {
+        const stats = {
+          str: rollOne(),
+          dex: rollOne(),
+          con: rollOne(),
+          int: rollOne(),
+          wis: rollOne(),
+          cha: rollOne()
+        };
+        if (Object.values(stats).some(v => v >= 15)) return stats;
+      }
+
+      const stats = {
+        str: rollOne(),
+        dex: rollOne(),
+        con: rollOne(),
+        int: rollOne(),
+        wis: rollOne(),
+        cha: rollOne()
+      };
+      const lowest = Object.keys(stats).reduce((a, b) => stats[a] <= stats[b] ? a : b);
+      stats[lowest] = Math.max(stats[lowest], 15);
+      return stats;
+    }
+
+    function pickWeightedClass(stats) {
+      const weighted = CLASS_DATA.map(cls => {
+        const focus = cls.focus ?? [];
+        if (focus.length === 0) return { cls, weight: 1 };
+        const mods = focus.map(attr => SD.statMod(stats[attr]));
+        if (mods.some(mod => mod < 0)) return { cls, weight: 0 };
+        if (mods.some(mod => mod >= 2)) return { cls, weight: 3 };
+        return { cls, weight: 1 };
+      });
+
+      const eligible = weighted.filter(item => item.weight > 0);
+      const pool = eligible.length ? eligible : weighted;
+      const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+      let roll = Math.random() * totalWeight;
+      for (const item of pool) {
+        roll -= item.weight;
+        if (roll <= 0) return item.cls;
+      }
+      return pool[pool.length - 1].cls;
+    }
+
+    function rollCharacter() {
+      const stats = rollStatsHouseRule();
+      const cls = pickWeightedClass(stats);
+      const ancestry = pick(ANCESTRY_OPTIONS).name;
+      const background = pick(BACKGROUND_OPTIONS);
+      const alignment = pick(Object.keys(ALIGNMENT_DEITIES));
+      const deity = pick(ALIGNMENT_DEITIES[alignment]);
+      const hp = Math.max(1, cls.hitDie + SD.statMod(stats.con));
+      const talent = SD.rollTalent(cls.talents);
+      const name = generateName(ancestry, cls.id);
+      const nameSequence = buildNameSequence(ancestry, cls.id, name);
+
+      return {
+        id: crypto.randomUUID(),
+        name,
+        nameSequence,
+        classId: cls.id,
+        ancestry,
+        background,
+        alignment,
+        deity,
+        hp,
+        maxHp: hp,
+        stats,
+        talentHistory: [{ level: 1, result: talent }]
+      };
+    }
+
+    function render(character, { skipAnimation = false } = {}) {
+      const cls = SD.getClassById(character.classId);
+      const shouldShowSave = Boolean(character) && !loadedFromShare;
+      refs.saveBtn.hidden = !shouldShowSave;
+      refs.randomizeBtn.textContent = "Roll Again";
+
+      if (!character) {
+        refs.resultPanel.hidden = true;
+        refs.randomizeBtn.textContent = "Roll a Character";
+        refs.saveBtn.hidden = true;
+        return;
+      }
+
+      const order = ["str", "dex", "con", "int", "wis", "cha"];
+      refs.resultStats.innerHTML = order.map(stat => {
+        const value = character.stats[stat];
+        const mod = SD.statMod(value);
+        const signed = mod >= 0 ? `+${mod}` : `${mod}`;
+        if (skipAnimation) {
+          return `<div class="stat"><span>${stat.toUpperCase()}</span><strong>${value}</strong><span>mod ${signed}</span></div>`;
+        }
+        return `<div class="stat reveal"><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
+      }).join("");
+
+      if (skipAnimation) {
+        refs.resultClass.textContent = cls?.name ?? character.classId;
+        refs.resultAncestry.textContent = character.ancestry;
+        refs.resultAlignment.textContent = character.alignment;
+        refs.resultBackground.textContent = character.background;
+        refs.resultDeity.textContent = character.deity;
+        refs.resultTalent.textContent = character.talentHistory[0]?.result ?? "None rolled";
+        refs.resultHp.textContent = `${character.hp} (max ${character.maxHp})`;
+        refs.resultName.textContent = character.name;
+        refs.resultPanel.hidden = false;
+        return;
+      }
+
+      const gen = ++revealGeneration;
+      refs.resultStats.innerHTML = order.map(stat => {
+        const value = character.stats[stat];
+        const mod = SD.statMod(value);
+        const signed = mod >= 0 ? `+${mod}` : `${mod}`;
+        return `<div class="stat reveal"><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
+      }).join("");
+
+      const steps = [
+        ...[...refs.resultStats.querySelectorAll(".stat")].map(el => ({ el, stat: true })),
+        { el: refs.resultClass, value: cls?.name ?? character.classId },
+        { el: refs.resultAncestry, value: character.ancestry },
+        { el: refs.resultAlignment, value: character.alignment },
+        { el: refs.resultBackground, value: character.background },
+        { el: refs.resultDeity, value: character.deity },
+        { el: refs.resultTalent, value: character.talentHistory[0]?.result ?? "None rolled" },
+        { el: refs.resultHp, value: `${character.hp} (max ${character.maxHp})` },
+        { el: refs.resultName, name: true, sequence: character.nameSequence }
+      ];
+
+      steps.forEach(step => {
+        step.el.classList.remove("is-in", "rolling");
+        if (!step.stat) step.el.textContent = "—";
+      });
+      steps.forEach(step => step.el.classList.add("reveal"));
+      refs.resultPanel.hidden = false;
+
+      steps.forEach((step, index) => {
+        const delay = 150 + index * REVEAL_STAGGER_MS;
+        setTimeout(() => {
+          if (gen !== revealGeneration) return;
+          if (step.stat) {
+            flickerStat(step.el, gen);
+            return;
+          }
+          if (step.name) {
+            typeOutName(step.el, step.sequence, gen);
+            return;
+          }
+          step.el.textContent = step.value;
+          step.el.classList.add("is-in");
+        }, delay);
+      });
+    }
+
+    const TYPE_SPEED_MS = 55;
+    const DELETE_SPEED_MS = 28;
+    const WRONG_HOLD_MS = 1400;
+    const CURSOR_BLINK_MS = 380;
+
+    function typeOutName(el, sequence, gen) {
+      el.classList.add("is-in", "typing");
+      const names = sequence && sequence.length ? sequence : ["—"];
+      let attempt = 0;
+
+      const typeOne = () => {
+        if (gen !== revealGeneration) return;
+        const target = names[attempt];
+        const isFinal = attempt === names.length - 1;
+        let i = 0;
+        el.textContent = "";
+
+        const typeTick = () => {
+          if (gen !== revealGeneration) return;
+          if (i <= target.length) {
+            el.textContent = target.slice(0, i) + "▌";
+            i++;
+            setTimeout(typeTick, TYPE_SPEED_MS);
+            return;
+          }
+          if (isFinal) {
+            el.textContent = target;
+            el.classList.remove("typing");
+            return;
+          }
+          holdThenDelete(target);
+        };
+
+        const holdThenDelete = target => {
+          let blinkOn = true;
+          el.textContent = target + "▌";
+          const blinkInterval = setInterval(() => {
+            if (gen !== revealGeneration) {
+              clearInterval(blinkInterval);
+              return;
+            }
+            blinkOn = !blinkOn;
+            el.textContent = target + (blinkOn ? "▌" : "");
+          }, CURSOR_BLINK_MS);
+
+          setTimeout(() => {
+            if (gen !== revealGeneration) {
+              clearInterval(blinkInterval);
+              return;
+            }
+            clearInterval(blinkInterval);
+            let j = target.length;
+            const deleteTick = () => {
+              if (gen !== revealGeneration) return;
+              if (j >= 0) {
+                el.textContent = target.slice(0, j) + "▌";
+                j--;
+                setTimeout(deleteTick, DELETE_SPEED_MS);
+                return;
+              }
+              attempt++;
+              typeOne();
+            };
+            deleteTick();
+          }, WRONG_HOLD_MS);
+        };
+
+        typeTick();
+      };
+
+      typeOne();
+    }
+
+    function flickerStat(el, gen) {
+      const strong = el.querySelector("strong");
+      const final = Number(strong.dataset.final);
+      el.classList.add("rolling");
+      const start = performance.now();
+      let last = 0;
+      const tick = now => {
+        if (gen !== revealGeneration) return;
+        if (now - start >= ROLL_FLICKER_MS) {
+          strong.textContent = final;
+          el.classList.remove("rolling");
+          el.classList.add("is-in");
+          return;
+        }
+        if (now - last >= 50) {
+          strong.textContent = 3 + Math.floor(Math.random() * 18);
+          last = now;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    function encodeShare(value) {
+      const json = JSON.stringify(value);
+      return window.btoa(unescape(encodeURIComponent(json)));
+    }
+
+    function decodeShare(raw) {
+      const cleaned = String(raw ?? "").trim();
+      if (!cleaned) throw new Error("Empty share payload");
+
+      try {
+        const decoded = decodeURIComponent(escape(window.atob(cleaned)));
+        return JSON.parse(decoded);
+      } catch {
+        try {
+          return JSON.parse(decodeURIComponent(cleaned));
+        } catch {
+          return JSON.parse(cleaned);
+        }
+      }
+    }
+
+    function showToast(message) {
+      refs.toast.textContent = message;
+      refs.toast.classList.add("is-visible");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        refs.toast.classList.remove("is-visible");
+      }, 1800);
+    }
+
+    function saveCurrent() {
+      if (!current) return;
+      const share = encodeShare(current);
+      const url = new URL(window.location.href);
+      url.searchParams.set("share", share);
+      window.open(url.toString(), "_blank");
+      showToast("Link opened in new tab");
+    }
+
+    init();
+  </script>
+</body>
+</html>
