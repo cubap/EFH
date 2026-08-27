@@ -733,26 +733,26 @@ const ANCESTRY_OPTIONS = [
 ]
 
 const BACKGROUND_OPTIONS = [
-  "1 Urchin",
-  "2 Wanted",
-  "3 Cult Initiate",
-  "4 Thieves' Guild",
-  "5 Banished",
-  "6 Orphaned",
-  "7 Wizard's Apprentice",
-  "8 Jeweler",
-  "9 Herbalist",
-  "10 Barbarian",
-  "11 Mercenary",
-  "12 Sailor",
-  "13 Acolyte",
-  "14 Soldier",
-  "15 Ranger",
-  "16 Scout",
-  "17 Minstrel",
-  "18 Scholar",
-  "19 Noble",
-  "20 Chirurgeon"
+  "1 Teamster",
+  "2 Farmer",
+  "3 Sage",
+  "4 Fisher",
+  "5 Woodcutter",
+  "6 Miner",
+  "7 Blacksmith's Apprentice",
+  "8 Carpenter",
+  "9 Mason",
+  "10 Sailor",
+  "11 Acolyte",
+  "12 Scribe",
+  "13 Merchant's Assistant",
+  "14 Cook",
+  "15 Healer's Assistant",
+  "16 Stablehand",
+  "17 Butcher",
+  "18 Servant",
+  "19 Jeweler",
+  "20 Potter"
 ]
 
 const ALIGNMENT_DEITIES = {

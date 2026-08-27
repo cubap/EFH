@@ -680,6 +680,16 @@ fieldset {
   padding: 0.3rem 0.7rem;
 }
 
+/* Name input + roll button row */
+.name-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.name-input-row input {
+  flex: 1;
+}
+
 /* Tooltip popup (fixed, appended to body) */
 .card-tooltip-popup {
   display: none;

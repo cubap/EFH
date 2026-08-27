@@ -18,6 +18,7 @@ wizardState.selections.deity = _initDeities[0] ?? null
 
 const refs = {
   nameInput: document.getElementById("nameInput"),
+  rollNameBtn: document.getElementById("rollNameBtn"),
   classCardGrid: document.getElementById("classCardGrid"),
   ancestryCardGrid: document.getElementById("ancestryCardGrid"),
   backgroundChips: document.getElementById("backgroundChips"),
@@ -84,6 +85,7 @@ function bindEvents() {
   })
 
   refs.generateBtn.addEventListener("click", buildCharacter)
+  refs.rollNameBtn.addEventListener("click", rollName)
   refs.rollStatsStepBtn.addEventListener("click", rerollStats)
   refs.rollHpBtn.addEventListener("click", rerollHp)
   refs.rollTalentBtn.addEventListener("click", rollTalent)
@@ -788,6 +790,61 @@ function buildCharacter() {
 
   appendLog(`Built ${wizardState.current.name} (${cls.name}).`)
   renderSummary()
+}
+
+// Type a sequence of names into the name input, ending on the real one.
+let nameGen = 0
+function rollName() {
+  const gen = ++nameGen
+  const realName = SD.generateName(wizardState.selections.ancestry, wizardState.selections.classId)
+  const sequence = SD.buildNameSequence(wizardState.selections.ancestry, wizardState.selections.classId, realName)
+
+  const input = refs.nameInput
+  input.value = ""
+  input.focus()
+
+  const TYPE_SPEED_MS = 55
+  const DELETE_SPEED_MS = 28
+  const WRONG_HOLD_MS = 1400
+
+  const typeInto = (text, speed, done) => {
+    let i = 0
+    const tick = () => {
+      if (gen !== nameGen) return
+      input.value = text.slice(0, ++i)
+      if (i < text.length) setTimeout(tick, speed)
+      else done()
+    }
+    tick()
+  }
+
+  const deleteFrom = (text, done) => {
+    let i = text.length
+    const tick = () => {
+      if (gen !== nameGen) return
+      input.value = text.slice(0, --i)
+      if (i > 0) setTimeout(tick, DELETE_SPEED_MS)
+      else done()
+    }
+    tick()
+  }
+
+  const runName = (idx) => {
+    if (gen !== nameGen) return
+    if (idx >= sequence.length) return
+    const isLast = idx === sequence.length - 1
+    typeInto(sequence[idx], TYPE_SPEED_MS, () => {
+      if (gen !== nameGen) return
+      if (isLast) return
+      setTimeout(() => {
+        if (gen !== nameGen) return
+        deleteFrom(sequence[idx], () => runName(idx + 1))
+      }, WRONG_HOLD_MS)
+    })
+  }
+
+  runName(0)
+  appendLog(`Rolled name: ${realName}`)
 }
 
 function rerollStats() {

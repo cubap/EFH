@@ -203,8 +203,14 @@ function rollCharacter() {
     // the UI can show a warning and offer a free reroll.
     const crappedOut = !Object.values(stats).some(v => finalStat(v) >= 15)
 
-    // 5. Rolled talent from the class's talent table.
-    const talent = SD.rollTalent(cls.talents)
+    // 5. Rolled talent from the class's talent table. Humans get an extra roll.
+    const talentHistory = []
+    const firstTalent = SD.rollTalent(cls.talents)
+    if (firstTalent) talentHistory.push({ level: 1, result: firstTalent })
+    if (ancestry === "Human") {
+        const secondTalent = SD.rollTalent(cls.talents)
+        if (secondTalent) talentHistory.push({ level: 1, result: secondTalent })
+    }
 
     // 6. Flavor name: ancestry shapes the first name, class shapes the surname.
     const name = generateName(ancestry, cls.id)
@@ -226,7 +232,7 @@ function rollCharacter() {
         crappedOut,
         stats,
         notes: [],
-        talentHistory: talent ? [{ level: 1, result: talent }] : []
+        talentHistory
     }
 }
 
@@ -279,7 +285,7 @@ function render(character) {
         { el: refs.resultAlignment, value: character.alignment },
         { el: refs.resultBackground, value: character.background },
         { el: refs.resultDeity, value: character.deity },
-        { el: refs.resultTalent, value: character.talentHistory[0]?.result ?? "None rolled" },
+        { el: refs.resultTalent, talent: true, value: character.talentHistory?.map(t => t.result).join("<br>") ?? "None rolled" },
         { el: refs.resultHp, value: `${character.hp} (max ${character.maxHp})` },
         { el: refs.resultName, name: true, sequence: character.nameSequence, onComplete: () => revealFeatures(gen) }
     ]
@@ -317,7 +323,11 @@ function render(character) {
                 typeOutName(step.el, step.sequence, gen, step.onComplete)
                 return
             }
-            step.el.textContent = step.value
+            if (step.talent) {
+                step.el.innerHTML = step.value
+            } else {
+                step.el.textContent = step.value
+            }
             step.el.classList.add("is-in")
         }, delay)
     })
@@ -441,7 +451,7 @@ function flickerStat(el, gen) {
             return
         }
         if (now - last >= 50) {
-            strong.textContent = 3 + Math.floor(Math.random() * 18)
+            strong.textContent = 3 + Math.floor(Math.random() * 15)
             last = now
         }
         requestAnimationFrame(tick)

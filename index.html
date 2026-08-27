@@ -42,7 +42,10 @@
         <section class="wizard-step" data-step="0">
           <label>
             Character name
-            <input id="nameInput" name="name" type="text" placeholder="Nyx of Emberfall">
+            <span class="name-input-row">
+              <button class="btn btn--paper btn--sm" type="button" id="rollNameBtn" title="Roll a name" aria-label="Roll a name">🎲</button>
+              <input id="nameInput" name="name" type="text" placeholder="Nyx of Emberfall">
+            </span>
           </label>
           <span class="field-label">Class <small>— hover to flip for details</small></span>
           <div id="classCardGrid"></div>

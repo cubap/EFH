@@ -99,6 +99,71 @@ const SD = (() => {
     return `${starts[roll(starts.length) - 1]}${ends[roll(ends.length) - 1]}`
   }
 
+  const pick = arr => arr[Math.floor(Math.random() * arr.length)]
+
+  // Each ancestry rolls a prefix + suffix (and Halflings may add a nickname), so
+  // the pool is the product of the two lists rather than a fixed set of names.
+  const FIRST_NAME_PATTERNS = {
+    "Half-Orc": () => `${pick(["Gor", "Ulf", "Brek", "Torv", "Drek", "Mug", "Rur", "Krag", "Hro", "Varg", "Skar", "Durg", "Bolg", "Thur", "Grim", "Rag"])}${pick(["gar", "rik", "mund", "grim", "nulf", "drek", "ur", "mong", "rak", "kar", "strom", "ox", "spit", "ulf", "tsar", "rong"])}`,
+    Elf: () => `${pick(["Ael", "Syl", "Fae", "Lir", "Nym", "Thal", "Vael", "Ily", "Elu", "Sera", "Lune", "Fael", "Nael", "Thir", "Vael", "Ily"])}${pick(["wen", "ara", "ion", "ith", "ael", "ora", "wen", "aria", "io'un", "e'eth", "æl", "ira", "wan", "iora", "aun", "iah"])}`,
+    Human: () => `${pick(["Al", "Bran", "Cor", "Dar", "El", "Gar", "Hal", "Jo", "Mar", "Tha", "Ren", "Sol", "Var", "Kel", "Tor", "Lis"])}${pick(["win", "ard", "ett", "ina", "ert", "eth", "wen", "ard", "as", "una", "art", "ath", "wan", "ard", "ald", "iah"])}`,
+    Dwarf: () => `${pick(["Bor", "Dun", "Gim", "Thor", "Bal", "Dur", "Kaz", "Brum", "Gor", "Thrak", "Bel", "Dorg", "Krum", "Fund", "Grim", "Thol"])}${pick(["in", "um", "ak", "or", "an", "lin", "lum", "lak", "lor", "ran", "rin", "rum", "rock", "brow"])}`,
+    Goblin: () => `${pick(["Zik", "Nib", "Grik", "Snek", "Plik", "Zog", "Zuk", "Nab", "Grak", "Snak", "Plok", "Zeg", "Zit", "Knob", "Trik", "Birk"])}${pick(["o", "ik", "ur", "ek", "ob", "", "ky", "s", "le", "kin", "t", "at", "ar"])}`,
+    Halfling: () => `${pick(["Pip", "Tob", "Ros", "Wil", "Fen", "Dot", "Bil", "Nim", "Cor", "Sam", "Len", "Hob", "Ril", "Top", "Mos", "Wen"])}${pick(["kin", "by", "ina", "let", "wick", "berry", "ton", "bin", "well", "ford", "burr", "hill", "mere", "low", "brook", "field"])}${Math.random() < 0.5 ? " " + pick(["Two-Boots", "Long-Bean", "Quick-Pick", "Moss-Back", "Sunny-Field", "Three-Toes", "Mud-Feet", "Bramble-Back", "Clover-Leaf", "Thistle-Top", "Pebble-Toe", "Fern-Whisker"]) : ""}`
+  }
+
+  const CLASS_SURNAMES = {
+    soulknife: ["Mindblade", "Whisper", "Veil", "Hollow", "Grimm", "Shadow", "Silence", "Dream", "Phantom", "Echo", "Wraith", "Mirage", "Specter", "Umbral", "Nocturne", "Gloom"],
+    paladin: ["Oathkeeper", "Brightblade", "Vow", "Sunheart", "Ironclad", "Dawnbringer", "Hallow", "Shield", "Aegis", "Luminous", "Virtue", "Sanctum", "Radiant", "Zealot", "Champion", "Warden"],
+    sorcerer: ["Stormcaller", "Ashborn", "Flame", "Thunder", "Void", "Arcanum", "Pyre", "Gale", "Rune", "Hex", "Ward", "Sigil", "Rift", "Aether", "Mana", "Chant"],
+    monk: ["Stonefist", "Quiet", "Stillwater", "Iron", "Barefoot", "Zen", "Lotus", "Willow", "Cinder", "Bamboo", "River", "Mountain", "Cloud", "Wind", "Pebble", "Reed"],
+    kinetic: ["Forceborn", "Pressure", "Wave", "Slam", "Burst", "Impact", "Shock", "Surge", "Pulse", "Quake", "Rumble", "Crash", "Boom", "Thud", "Clash", "Riot"],
+    fighter: ["Redmaul", "Grimsteel", "Brawlmark", "Ironmaw", "Cutthorn", "Warbrand", "Helmsunder", "Gritforge", "Bladelean", "Rendbar", "Steelgrim", "Hackfell", "Maulridge", "Grudgeborn", "Breakspire", "Fellmarch"],
+    bard: ["Loreweft", "Songbarrow", "Talehart", "Versewind", "Chordwell", "Mythrun", "Sagehollow", "Rhymeford", "Wisptale", "Quieturn", "Musefen", "Storymere", "Balladthorn", "Echofern", "Harproot", "Lumenreach"],
+    "pit-fighter": ["Scarbrand", "Goreline", "Fistgrave", "Ragemaul", "Bruiseborn", "Chainscar", "Pitmark", "Brawlscar", "Grudgepit", "Maulscar", "Rendcage", "Bloodturn", "Crackjaw", "Slamforge", "Ragebend", "Grimcinder"],
+    priest: ["Purgeborn", "Faithrend", "Lightgrave", "Chantfell", "Ritesunder", "Devoturn", "Psalmbreak", "Holybrand", "Purethorn", "Cleanspire", "Vowreach", "Blessmaw", "Scriptforge", "Hymnward", "Gracebend", "Sanctfell"],
+    ranger: ["Trailthorn", "Wanderfen", "Trackmaw", "Huntwell", "Pathgrim", "Farsunder", "Wildmarch", "Stalkridge", "Roamthorn", "Brushfell", "Fernmark", "Grovelean", "Mossreach", "Thornstride", "Pinegrave", "Hazelrun"],
+    seer: ["Boneweft", "Runegrave", "Starfell", "Fatemark", "Smokeweir", "Bloodrun", "Omenreach", "Gloomspire", "Sightthorn", "Weirdbend", "Prophetmaw", "Ashweft", "Foretell", "Hexmarch", "Visionbrand", "Darkweir"],
+    thief: ["Gutterhand", "Quickpick", "Shadelean", "Slipthorn", "Nightrun", "Cutpalm", "Blinkridge", "Slinkwell", "Fingershard", "Maskbend", "Grinmark", "Prythorn", "Latchfen", "Sneakforge", "Twistmaw", "Clutchgrim"],
+    wizard: ["Spellweft", "Glyphthorn", "Charmridge", "Fellscroll", "Inkbrand", "Starforge", "Mystmarch", "Arcweir", "Wardrun", "Lorebend", "Spellhart", "Fatecinder", "Runelean", "Hexspire", "Manafen", "Astralmark"]
+  }
+
+  const CHEEKY_NAMES = [
+    "Bart Simpson", "Lance-o-bass", "Rubber Ducky",
+    "Ronald Drumpf", "The Hamburglar", "GigaChad",
+    "Bartholomew the Mild", "Malcom of the Middle", "Brenda Two-Toes",
+    "Kevin the Adequate", "Harriet the Spy", "Gary the Fine",
+    "Steve the Cat", "Bob the Builder", "Tim the Tool",
+    "Dave the Default", "Chad the Generic", "Kool Kyle",
+    "Brenda the Bland", "Gerald of SOHO", "Great Scott"
+  ]
+
+  const ABSURD_NAMES = [
+    "Piss-ant the Puny", "Unfuckable von Limp", "Cunt Smallprick",
+    "Sir Cumference the Soft", "Brenda the Unfuckable", "Gerald of the Impure Taint",
+    "Bartholomew the Mildew", "Osric the Damp", "Mildred Saddlebags",
+    "Clovis Gutterslut", "Gerald the Uncircumsized", "Bramble the Moist",
+    "Tilde Topleft", "Dr. Cosby", "Guzzler Superior",
+    "Daphne Mapletwat", "Gimli the Unlegged", "Jargon Fountain",
+    "Unrandomized Selection", "Drop Tables", "😴👯‍♀️👯‍♀️ 💀🔥"
+  ]
+
+  // Build the real name from the rolled ancestry + class.
+  const generateName = (ancestry, classId) => {
+    const first = (FIRST_NAME_PATTERNS[ancestry] ?? FIRST_NAME_PATTERNS.Human)()
+    const surnames = CLASS_SURNAMES[classId] ?? ["Adventurer"]
+    return `${first} ${pick(surnames)}`
+  }
+
+  // Build the reveal sequence: a wrong-build name, a cheeky one, an absurd
+  // fabrication, then the real name last so it feels earned.
+  const buildNameSequence = (ancestry, classId, realName) => {
+    const otherAncestries = Object.keys(FIRST_NAME_PATTERNS).filter(a => a !== ancestry)
+    const otherClasses = Object.keys(CLASS_SURNAMES).filter(c => c !== classId)
+    const wrongName = generateName(pick(otherAncestries), pick(otherClasses))
+    return [wrongName, pick(CHEEKY_NAMES), pick(ABSURD_NAMES), realName]
+  }
+
   const escapeHtml = value =>
     String(value)
       .replaceAll("&", "&amp;")
@@ -240,6 +305,8 @@ const SD = (() => {
     rollStats,
     rollTalent,
     randomName,
+    generateName,
+    buildNameSequence,
     escapeHtml,
     getParam,
     buildMacroItems,
