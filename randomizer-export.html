@@ -243,6 +243,55 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .stat.reroll-hold {
+      animation: none;
+      opacity: 1;
+    }
+
+    .stat.reroll-hold strong {
+      color: #8a1c1c;
+    }
+
+    .tossed-card {
+      pointer-events: none;
+      z-index: 10;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat.reroll-degraded {
+      --reroll-count: 0;
+      transform: rotate(calc(var(--reroll-count) * 0.3deg));
+      box-shadow: 0 calc(var(--reroll-count) * 1.5px) calc(var(--reroll-count) * 2px) rgba(0, 0, 0, calc(var(--reroll-count) * 0.09));
+      background-color: rgba(110, 90, 30, calc(var(--reroll-count) * 0.05));
+      transition: transform 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+    }
+
+    .crapped-out {
+      margin: 0.8rem 0;
+      padding: 0.6rem 0.9rem;
+      border: 2px solid #8a1c1c;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(138, 28, 28, 0.18), rgba(138, 28, 28, 0.05));
+      color: #5c1414;
+      font-weight: 600;
+      box-shadow: inset 0 0 12px rgba(138, 28, 28, 0.25);
+    }
+
+    .crapped-out strong {
+      color: #8a1c1c;
+      letter-spacing: 0.02em;
+    }
+
+    .crapped-out.reveal {
+      opacity: 0.45;
+      animation: reveal-pulse 1.1s ease-in-out infinite;
+    }
+
+    .crapped-out.reveal.is-in {
+      opacity: 1;
+      animation: reveal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
     @keyframes reveal-pulse {
       0%, 100% { opacity: 0.3; }
       50% { opacity: 0.65; }
@@ -323,6 +372,9 @@
         </dl>
 
         <div class="result-stats" id="resultStats"></div>
+        <div class="crapped-out" id="crappedOutWarning" hidden>
+          <strong>Crapped Out!</strong> You can keep it, but a reroll is allowed.
+        </div>
       </section>
     </main>
   </div>
@@ -429,7 +481,8 @@
       resultDeity: document.getElementById("resultDeity"),
       resultHp: document.getElementById("resultHp"),
       resultTalent: document.getElementById("resultTalent"),
-      resultStats: document.getElementById("resultStats")
+      resultStats: document.getElementById("resultStats"),
+      crappedOutWarning: document.getElementById("crappedOutWarning")
     };
 
     const REVEAL_STAGGER_MS = 900;
@@ -504,12 +557,14 @@
       "Daphne Mapletwat", "Gimli the Unlegged", "Jargon Fountain", "Unrandomized Selection", "Drop Tables", "😴👯‍♀️👯‍♀️ 💀🔥"
     ];
 
+    const finalStat = value => value.at?.(-1) ?? value;
+
     const SD = {
       roll(sides) {
         return Math.floor(Math.random() * sides) + 1;
       },
       statMod(value) {
-        return Math.floor((value - 10) / 2);
+        return Math.floor((finalStat(value) - 10) / 2);
       },
       getClassById(id) {
         return CLASS_DATA.find(item => item.id === id) ?? null;
@@ -540,26 +595,17 @@
 
     function rollStatsHouseRule() {
       const rollOne = () => {
+        const rolls = [];
         let value = SD.roll(6) + SD.roll(6) + SD.roll(6);
+        rolls.push(value);
         while (value <= 6) {
           value = SD.roll(6) + SD.roll(6) + SD.roll(6);
+          rolls.push(value);
         }
-        return value;
+        return rolls;
       };
 
-      for (let attempt = 0; attempt < 20; attempt++) {
-        const stats = {
-          str: rollOne(),
-          dex: rollOne(),
-          con: rollOne(),
-          int: rollOne(),
-          wis: rollOne(),
-          cha: rollOne()
-        };
-        if (Object.values(stats).some(v => v >= 15)) return stats;
-      }
-
-      const stats = {
+      return {
         str: rollOne(),
         dex: rollOne(),
         con: rollOne(),
@@ -567,16 +613,13 @@
         wis: rollOne(),
         cha: rollOne()
       };
-      const lowest = Object.keys(stats).reduce((a, b) => stats[a] <= stats[b] ? a : b);
-      stats[lowest] = Math.max(stats[lowest], 15);
-      return stats;
     }
 
     function pickWeightedClass(stats) {
       const weighted = CLASS_DATA.map(cls => {
         const focus = cls.focus ?? [];
         if (focus.length === 0) return { cls, weight: 1 };
-        const mods = focus.map(attr => SD.statMod(stats[attr]));
+        const mods = focus.map(attr => SD.statMod(finalStat(stats[attr])));
         if (mods.some(mod => mod < 0)) return { cls, weight: 0 };
         if (mods.some(mod => mod >= 2)) return { cls, weight: 3 };
         return { cls, weight: 1 };
@@ -600,7 +643,8 @@
       const background = pick(BACKGROUND_OPTIONS);
       const alignment = pick(Object.keys(ALIGNMENT_DEITIES));
       const deity = pick(ALIGNMENT_DEITIES[alignment]);
-      const hp = Math.max(1, cls.hitDie + SD.statMod(stats.con));
+      const hp = Math.max(1, cls.hitDie + SD.statMod(finalStat(stats.con)));
+      const crappedOut = !Object.values(stats).some(v => finalStat(v) >= 15);
       const talent = SD.rollTalent(cls.talents);
       const name = generateName(ancestry, cls.id);
       const nameSequence = buildNameSequence(ancestry, cls.id, name);
@@ -616,6 +660,7 @@
         deity,
         hp,
         maxHp: hp,
+        crappedOut,
         stats,
         talentHistory: [{ level: 1, result: talent }]
       };
@@ -636,13 +681,15 @@
 
       const order = ["str", "dex", "con", "int", "wis", "cha"];
       refs.resultStats.innerHTML = order.map(stat => {
-        const value = character.stats[stat];
+        const rolls = character.stats[stat];
+        const value = finalStat(rolls);
         const mod = SD.statMod(value);
         const signed = mod >= 0 ? `+${mod}` : `${mod}`;
+        const historyAttr = Array.isArray(rolls) && rolls.length > 1 ? ` data-history='${JSON.stringify(rolls)}'` : "";
         if (skipAnimation) {
           return `<div class="stat"><span>${stat.toUpperCase()}</span><strong>${value}</strong><span>mod ${signed}</span></div>`;
         }
-        return `<div class="stat reveal"><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
+        return `<div class="stat reveal"${historyAttr}><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
       }).join("");
 
       if (skipAnimation) {
@@ -660,14 +707,17 @@
 
       const gen = ++revealGeneration;
       refs.resultStats.innerHTML = order.map(stat => {
-        const value = character.stats[stat];
+        const rolls = character.stats[stat];
+        const value = finalStat(rolls);
         const mod = SD.statMod(value);
         const signed = mod >= 0 ? `+${mod}` : `${mod}`;
-        return `<div class="stat reveal"><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
+        const historyAttr = Array.isArray(rolls) && rolls.length > 1 ? ` data-history='${JSON.stringify(rolls)}'` : "";
+        return `<div class="stat reveal"${historyAttr}><span>${stat.toUpperCase()}</span><strong data-final="${value}">?</strong><span>mod ${signed}</span></div>`;
       }).join("");
 
       const steps = [
         ...[...refs.resultStats.querySelectorAll(".stat")].map(el => ({ el, stat: true })),
+        { el: refs.crappedOutWarning, warning: true },
         { el: refs.resultClass, value: cls?.name ?? character.classId },
         { el: refs.resultAncestry, value: character.ancestry },
         { el: refs.resultAlignment, value: character.alignment },
@@ -680,9 +730,11 @@
 
       steps.forEach(step => {
         step.el.classList.remove("is-in", "rolling");
-        if (!step.stat) step.el.textContent = "—";
+        if (!step.stat && !step.warning) step.el.textContent = "—";
       });
       steps.forEach(step => step.el.classList.add("reveal"));
+      refs.crappedOutWarning.hidden = !character.crappedOut;
+      refs.crappedOutWarning.classList.remove("is-in");
       refs.resultPanel.hidden = false;
 
       steps.forEach((step, index) => {
@@ -691,6 +743,11 @@
           if (gen !== revealGeneration) return;
           if (step.stat) {
             flickerStat(step.el, gen);
+            return;
+          }
+          if (step.warning) {
+            if (!character.crappedOut) return;
+            step.el.classList.add("is-in");
             return;
           }
           if (step.name) {
@@ -779,6 +836,13 @@
     function flickerStat(el, gen) {
       const strong = el.querySelector("strong");
       const final = Number(strong.dataset.final);
+      const history = el.dataset.history ? JSON.parse(el.dataset.history) : null;
+
+      if (history && history.length > 1) {
+        rerollStat(el, strong, history, gen);
+        return;
+      }
+
       el.classList.add("rolling");
       const start = performance.now();
       let last = 0;
@@ -797,6 +861,73 @@
         requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
+    }
+
+    function rerollStat(el, strong, history, gen) {
+      let index = 0;
+
+      const showRoll = () => {
+        if (gen !== revealGeneration) return;
+        const value = history[index];
+        const isFinal = index === history.length - 1;
+
+        el.classList.add("rolling", "reroll-hold");
+        strong.textContent = value;
+
+        if (isFinal) {
+          setTimeout(() => {
+            if (gen !== revealGeneration) return;
+            el.classList.remove("rolling", "reroll-hold");
+            el.classList.add("is-in");
+          }, 400);
+          return;
+        }
+
+        setTimeout(() => {
+          if (gen !== revealGeneration) return;
+          tossCard(el, value);
+          index++;
+          showRoll();
+        }, 550);
+      };
+
+      showRoll();
+    }
+
+    function tossCard(statEl, value) {
+      const rect = statEl.getBoundingClientRect();
+
+      const clone = statEl.cloneNode(true);
+      clone.classList.remove("reveal", "is-in", "rolling", "reroll-hold", "reroll-degraded");
+      clone.style.removeProperty("--reroll-count");
+      clone.classList.add("tossed-card");
+      clone.style.position = "fixed";
+      clone.style.left = `${rect.left}px`;
+      clone.style.top = `${rect.top}px`;
+      clone.style.width = `${rect.width}px`;
+      clone.style.margin = "0";
+      clone.querySelector("strong").textContent = value;
+      document.body.appendChild(clone);
+
+      const rerolls = Number(statEl.dataset.rerollCount ?? 0) + 1;
+      statEl.dataset.rerollCount = rerolls;
+      statEl.classList.add("reroll-degraded");
+      statEl.style.setProperty("--reroll-count", rerolls);
+
+      const dir = Math.random() > 0.5 ? 1 : -1;
+      clone.style.transformOrigin = dir === 1 ? "100% 100%" : "0% 100%";
+
+      const anim = clone.animate(
+        [
+          { transform: "perspective(600px) rotateZ(0deg) rotateX(0deg)", opacity: 1, offset: 0, easing: "ease-in" },
+          { transform: `perspective(600px) rotateZ(0deg) rotateX(0deg) scale(2.2, 0.4) skewX(${dir * 35}deg) skewY(${dir * 20}deg)`, opacity: 1, offset: 0.08, easing: "ease-out" },
+          { transform: "perspective(600px) rotateZ(0deg) rotateX(0deg)", opacity: 1, offset: 0.16, easing: "ease-out" },
+          { transform: `perspective(600px) rotateZ(${dir * 90}deg) rotateX(0deg)`, opacity: 1, offset: 0.45, easing: "cubic-bezier(0.55, 0, 1, 0.45)" },
+          { transform: `perspective(600px) rotateZ(${dir * 95}deg) rotateY(${dir * 90}deg)`, opacity: 0, offset: 1 }
+        ],
+        { duration: 1800, fill: "forwards" }
+      );
+      anim.onfinish = () => clone.remove();
     }
 
     function encodeShare(value) {
